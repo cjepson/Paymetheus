@@ -10,24 +10,26 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Paymetheus
 {
     /// <summary>
-    /// Interaction logic for Accounts.xaml
+    /// Interaction logic for ImportScript.xaml
     /// </summary>
-    public partial class Accounts : Page
+    public partial class ImportScriptDialogView : UserControl
     {
-        public Accounts()
+        public ImportScriptDialogView()
         {
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void passphraseTextBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-
+            if (DataContext != null)
+            {
+                ((dynamic)DataContext).Passphrase = ((PasswordBox)sender).Password;
+            }
         }
     }
 }

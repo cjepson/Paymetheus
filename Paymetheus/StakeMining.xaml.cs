@@ -16,18 +16,21 @@ using System.Windows.Shapes;
 namespace Paymetheus
 {
     /// <summary>
-    /// Interaction logic for Accounts.xaml
+    /// Interaction logic for StakeMining.xaml
     /// </summary>
-    public partial class Accounts : Page
+    public partial class StakeMining : Page
     {
-        public Accounts()
+        public StakeMining()
         {
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-
+            var dataContext = this.DataContext;
+            if (dataContext != null)
+            {
+            }
         }
     }
 }

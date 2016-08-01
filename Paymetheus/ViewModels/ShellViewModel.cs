@@ -50,6 +50,8 @@ namespace Paymetheus.ViewModels
 
         public ICommand CreateAccountCommand { get; }
 
+        public ICommand CreateScriptCommand { get; }
+
         private void CreateAccount()
         {
             VisibleDialogContent = new CreateAccountDialogViewModel(this);

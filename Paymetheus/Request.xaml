@@ -7,7 +7,7 @@
       xmlns:vm="clr-namespace:Paymetheus.ViewModels"
       mc:Ignorable="d"
       x:Name="Page"
-      WindowTitle="Page"
+      WindowTitle="Request"
       FlowDirection="LeftToRight"
       WindowWidth="640" WindowHeight="480" d:DesignWidth="640" d:DesignHeight="480"
       DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=RequestViewModel}" Loaded="Page_Loaded">

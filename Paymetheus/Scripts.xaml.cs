@@ -16,13 +16,21 @@ using System.Windows.Shapes;
 namespace Paymetheus
 {
     /// <summary>
-    /// Interaction logic for Accounts.xaml
+    /// Interaction logic for Scripts.xaml
     /// </summary>
-    public partial class Accounts : Page
+    public partial class Scripts : Page
     {
-        public Accounts()
+        public Scripts()
         {
             InitializeComponent();
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            var dataContext = this.DataContext;
+            if (dataContext != null)
+            {
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
