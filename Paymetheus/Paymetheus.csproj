@@ -173,11 +173,17 @@
     <Compile Include="PassphraseDialogView.xaml.cs">
       <DependentUpon>PassphraseDialogView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PurchaseTickets.xaml.cs">
+      <DependentUpon>PurchaseTickets.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RenameAccountDialogView.xaml.cs">
       <DependentUpon>RenameAccountDialogView.xaml</DependentUpon>
     </Compile>
     <Compile Include="SignTransactionDialog.xaml.cs">
       <DependentUpon>SignTransactionDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StakeMining.xaml.cs">
+      <DependentUpon>StakeMining.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\TransactionCategoryIcon.xaml.cs">
       <DependentUpon>TransactionCategoryIcon.xaml</DependentUpon>
@@ -305,6 +311,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PurchaseTickets.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="RenameAccountDialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -342,6 +352,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SignTransactionDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StakeMining.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

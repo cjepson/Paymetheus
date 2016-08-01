@@ -43,6 +43,11 @@ namespace Paymetheus
             NavigateTo(new Send());
         }
 
+        public void NavigatePurchaseTickets(object sender, RoutedEventArgs e)
+        {
+            NavigateTo(new PurchaseTickets());
+        }
+
         public void NavigateRequest(object sender, RoutedEventArgs e)
         {
             if (_request == null)
@@ -56,6 +61,11 @@ namespace Paymetheus
         public void NavigateHistory(object sender, RoutedEventArgs e)
         {
             NavigateTo(new History());
+        }
+
+        public void NavigateStakeMining(object sender, RoutedEventArgs e)
+        {
+            NavigateTo(new StakeMining());
         }
 
         public void NavigateUnspent(object sender, RoutedEventArgs e)
