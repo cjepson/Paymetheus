@@ -48,14 +48,5 @@ namespace Paymetheus.ViewModels
                 MessageBox.Show(ex.Message, "Error");
             }
         }
-
-        private void ImportScript()
-        {
-            var shell = ViewModelLocator.ShellViewModel as ShellViewModel;
-            if (shell != null)
-            {
-                shell.VisibleDialogContent = new ImportScriptDialogViewModel(shell);
-            }
-        }
     }
 }

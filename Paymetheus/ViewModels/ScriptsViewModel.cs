@@ -10,12 +10,17 @@ namespace Paymetheus.ViewModels
 {
     public sealed class ScriptsViewModel : ViewModelBase
     {
-        private DelegateCommand _importScriptCommand;
-        public ICommand ImportScriptCommand => _importScriptCommand;
+        public ICommand OpenImportScriptDialogCommand { get; }
+
+        private void OpenImportScriptDialogAction()
+        {
+            var shell = (ShellViewModel)ViewModelLocator.ShellViewModel;
+            shell.ShowDialog(new ImportScriptDialogViewModel(shell));
+        }
 
         public ScriptsViewModel() : base()
         {
-            _importScriptCommand = new DelegateCommand(ImportScriptCommand);
+            OpenImportScriptDialogCommand = new DelegateCommand(OpenImportScriptDialogAction);
         }
     }
 }
