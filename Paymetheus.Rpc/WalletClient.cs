@@ -236,6 +236,24 @@ namespace Paymetheus.Rpc
             await client.ImportPrivateKeyAsync(request, cancellationToken: _tokenSource.Token);
         }
 
+        public async Task ImportScriptAsync(byte[] scriptBytes, bool rescan, int scanFrom, string passphrase)
+        {
+            if (scriptBytes == null)
+                throw new ArgumentNullException(nameof(scriptBytes));
+            if (passphrase == null)
+                throw new ArgumentNullException(nameof(passphrase));
+
+            var client = new WalletService.WalletServiceClient(_channel);
+            var request = new ImportScriptRequest
+            {
+                Script = ByteString.CopyFrom(scriptBytes),
+                Rescan = rescan,
+                Passphrase = ByteString.CopyFromUtf8(passphrase), // Poorly named: this outputs UTF8 from a UTF16 System.String
+                ScanFrom = scanFrom,
+            };
+            await client.ImportScriptAsync(request, cancellationToken: _tokenSource.Token);
+        }
+
         public async Task RenameAccountAsync(Account account, string newAccountName)
         {
             if (newAccountName == null)
