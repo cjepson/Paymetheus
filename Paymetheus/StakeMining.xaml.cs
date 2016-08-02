@@ -30,7 +30,6 @@ namespace Paymetheus
             var dataContext = this.DataContext;
             if (dataContext != null)
             {
-                ((dynamic)dataContext).GeneratedAddress = null;
             }
         }
     }

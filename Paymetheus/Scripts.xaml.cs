@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Paymetheus
 {
     /// <summary>
-    /// Interaction logic for PurchaseTickets.xaml
+    /// Interaction logic for Scripts.xaml
     /// </summary>
-    public partial class PurchaseTickets : Page
+    public partial class Scripts : Page
     {
-        public PurchaseTickets()
+        public Scripts()
         {
             InitializeComponent();
         }

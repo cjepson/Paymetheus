@@ -38,6 +38,11 @@ namespace Paymetheus
             NavigateTo(new Accounts());
         }
 
+        public void NavigateScripts(object sender, RoutedEventArgs e)
+        {
+            NavigateTo(new Scripts());
+        }
+
         public void NavigateSend(object sender, RoutedEventArgs e)
         {
             NavigateTo(new Send());

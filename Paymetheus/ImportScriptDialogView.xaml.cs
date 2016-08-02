@@ -10,26 +10,25 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Paymetheus
 {
     /// <summary>
-    /// Interaction logic for PurchaseTickets.xaml
+    /// Interaction logic for ImportScript.xaml
     /// </summary>
-    public partial class PurchaseTickets : Page
+    public partial class ImportScript : Window
     {
-        public PurchaseTickets()
+        public ImportScript()
         {
             InitializeComponent();
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private void passphraseTextBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            var dataContext = this.DataContext;
-            if (dataContext != null)
+            if (DataContext != null)
             {
+                ((dynamic)DataContext).Passphrase = ((PasswordBox)sender).Password;
             }
         }
     }

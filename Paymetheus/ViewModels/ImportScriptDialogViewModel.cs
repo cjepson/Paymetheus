@@ -1,0 +1,54 @@
+﻿// Copyright (c) 2016 The btcsuite developers
+// Copyright (c) 2016 The Decred developers
+// Licensed under the ISC license.  See LICENSE file in the project root for full license information.
+
+using Grpc.Core;
+using Paymetheus.Decred.Util;
+using Paymetheus.Framework;
+using System;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+
+namespace Paymetheus.ViewModels
+{
+    public sealed class ImportScriptDialogViewModel : DialogViewModelBase
+    {
+        public ImportScriptDialogViewModel(ShellViewModel shell) : base(shell)
+        {
+            Execute = new DelegateCommandAsync(ExecuteAction);
+        }
+
+        private byte[] _scriptBytes;
+        public string ScriptHexString {
+            get { return Hexadecimal.Encode(_scriptBytes); }
+            set { _scriptBytes = Hexadecimal.Decode(value); }
+        }
+        public string Passphrase { private get; set; } = "";
+
+        public ICommand Execute { get; }
+
+        private async Task ExecuteAction()
+        {
+            try
+            {
+                await App.Current.Synchronizer.WalletRpcClient.ImportScriptAsync(_scriptBytes, true, 0, Passphrase);
+                HideDialog();
+            }
+            catch (RpcException ex) when (ex.Status.StatusCode == StatusCode.AlreadyExists)
+            {
+                MessageBox.Show("Script already exists");
+            }
+            catch (RpcException ex) when (ex.Status.StatusCode == StatusCode.InvalidArgument)
+            {
+                // Since there is no client-side validation of account name user input, this might be an
+                // invalid account name or the wrong passphrase.  Just show the detail for now.
+                MessageBox.Show(ex.Status.Detail);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+        }
+    }
+}

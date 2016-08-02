@@ -24,6 +24,9 @@
         <DataTemplate DataType="{x:Type viewmodels:CreateAccountDialogViewModel}">
             <local:CreateAccountDialogView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:ImportScriptDialogViewModel}">
+            <local:CreateAccountDialogView/>
+        </DataTemplate>
         <DataTemplate DataType="{x:Type viewmodels:RenameAccountDialogViewModel}">
             <local:RenameAccountDialogView/>
         </DataTemplate>
