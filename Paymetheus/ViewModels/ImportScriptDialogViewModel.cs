@@ -22,11 +22,12 @@ namespace Paymetheus.ViewModels
         private byte[] _scriptBytes;
         public string ScriptHexString {
             get { return Hexadecimal.Encode(_scriptBytes); }
-            set { _scriptBytes = Hexadecimal.Decode(value); }
+            set { _scriptBytes = Hexadecimal.Decode(value); }        
         }
         public string Passphrase { private get; set; } = "";
 
-        public ICommand Execute { get; }
+        private DelegateCommand _importScript;
+        public ICommand Execute => _importScript;
 
         private async Task ImportScriptAction()
         {
