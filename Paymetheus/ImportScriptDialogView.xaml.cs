@@ -17,9 +17,9 @@ namespace Paymetheus
     /// <summary>
     /// Interaction logic for ImportScript.xaml
     /// </summary>
-    public partial class ImportScript : Window
+    public partial class ImportScriptDialogView : UserControl
     {
-        public ImportScript()
+        public ImportScriptDialogView()
         {
             InitializeComponent();
         }
