@@ -27,7 +27,6 @@ namespace Paymetheus.ViewModels
             }
 
             CreateAccountCommand = new DelegateCommand(CreateAccount);
-            ImportScriptCommand = new DelegateCommand(ImportScript);
 
             StartupWizard = new StartupWizard(this, App.Current.DefaultCSRPO);
             StartupWizardVisible = true;
@@ -56,11 +55,6 @@ namespace Paymetheus.ViewModels
         private void CreateAccount()
         {
             VisibleDialogContent = new CreateAccountDialogViewModel(this);
-        }
-
-        private void ImportScript()
-        {
-            VisibleDialogContent = new ImportScriptDialogViewModel(this);
         }
     }
 }
