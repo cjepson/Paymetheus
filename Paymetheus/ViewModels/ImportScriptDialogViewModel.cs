@@ -14,12 +14,9 @@ namespace Paymetheus.ViewModels
 {
     public sealed class ImportScriptDialogViewModel : DialogViewModelBase
     {
-        private DelegateCommand _importScriptCommand;
-        public ICommand ImportScriptCommand => _importScriptCommand;
-
         public ImportScriptDialogViewModel(ShellViewModel shell) : base(shell)
         {
-            _importScriptCommand = new DelegateCommand(ImportScriptAction);
+            Execute = new DelegateCommandAsync(ImportScriptAction);
         }
 
         private byte[] _scriptBytes;
@@ -31,7 +28,7 @@ namespace Paymetheus.ViewModels
 
         public ICommand Execute { get; }
 
-        private async void ImportScriptAction()
+        private async Task ImportScriptAction()
         {
             try
             {
