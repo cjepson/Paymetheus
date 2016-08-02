@@ -21,7 +21,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Margin="0 0 0 10" Text="Scripts" Grid.Column="0" Style="{StaticResource shellMediumHeaderTextBlockStyle}"/>
                 <Button Grid.Column="1"  HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 0 0"
-                    Content="IMPORT" Command="{Binding ShellViewModel.CreateAccountCommand, Source={StaticResource ViewModelLocator}}"
+                    Content="IMPORT" Command="{Binding ShellViewModel.ImportScriptCommand, Source={StaticResource ViewModelLocator}}"
                     Style="{DynamicResource ButtonBlue}"/>
             </Grid>
         </StackPanel>

@@ -14,9 +14,12 @@ namespace Paymetheus.ViewModels
 {
     public sealed class ImportScriptDialogViewModel : DialogViewModelBase
     {
+        private DelegateCommand _importScriptCommand;
+        public ICommand ImportScriptCommand => _importScriptCommand;
+
         public ImportScriptDialogViewModel(ShellViewModel shell) : base(shell)
         {
-            Execute = new DelegateCommandAsync(ExecuteAction);
+            _importScriptCommand = new DelegateCommand(ImportScriptAction);
         }
 
         private byte[] _scriptBytes;
@@ -28,7 +31,7 @@ namespace Paymetheus.ViewModels
 
         public ICommand Execute { get; }
 
-        private async Task ExecuteAction()
+        private async void ImportScriptAction()
         {
             try
             {
@@ -41,13 +44,20 @@ namespace Paymetheus.ViewModels
             }
             catch (RpcException ex) when (ex.Status.StatusCode == StatusCode.InvalidArgument)
             {
-                // Since there is no client-side validation of account name user input, this might be an
-                // invalid account name or the wrong passphrase.  Just show the detail for now.
                 MessageBox.Show(ex.Status.Detail);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error");
+            }
+        }
+
+        private void ImportScript()
+        {
+            var shell = ViewModelLocator.ShellViewModel as ShellViewModel;
+            if (shell != null)
+            {
+                shell.VisibleDialogContent = new ImportScriptDialogViewModel(shell);
             }
         }
     }
