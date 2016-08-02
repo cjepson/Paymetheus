@@ -16,17 +16,23 @@ namespace Paymetheus.ViewModels
     {
         public ImportScriptDialogViewModel(ShellViewModel shell) : base(shell)
         {
-            Execute = new DelegateCommandAsync(ImportScriptAction);
+            _importScript = new DelegateCommandAsync(ImportScriptAction);
         }
 
         private byte[] _scriptBytes;
         public string ScriptHexString {
             get { return Hexadecimal.Encode(_scriptBytes); }
-            set { _scriptBytes = Hexadecimal.Decode(value); }        
+            set {
+                 _scriptBytes = Hexadecimal.Decode(value);
+                _importScript.Executable = false;
+                if (_scriptBytes != null) {
+                    _importScript.Executable = true;
+                }
+            }        
         }
         public string Passphrase { private get; set; } = "";
 
-        private DelegateCommand _importScript;
+        private DelegateCommandAsync _importScript;
         public ICommand Execute => _importScript;
 
         private async Task ImportScriptAction()
