@@ -53,7 +53,7 @@
                 <TextBox Grid.Column="3" Grid.Row="1" Name="TicketAddressTextBox" Height="20" VerticalAlignment="Center"/>
 
                 <TextBlock Grid.Column="1" Grid.Row="2" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Using a pool?" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <CheckBox Grid.Column="3" Grid.Row="2" Name="UsingAPoolCheckBox" Height="20" VerticalAlignment="Bottom"/>
+                <CheckBox Grid.Column="3" Grid.Row="2" Name="UsingAPoolCheckBox" Height="20" VerticalAlignment="Bottom" IsChecked="{Binding PoolChecked}"/>
 
                 <TextBlock Grid.Column="1" Grid.Row="3" Text="Pool address" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <TextBlock.Style>
@@ -133,7 +133,7 @@
                 <TextBox Grid.Column="3" Grid.Row="5" Name="ExpiryTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" Text="16" TextAlignment="Right"/>
 
                 <TextBlock Grid.Column="1" Grid.Row="6" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Adjust fees?" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <CheckBox Grid.Column="3" Grid.Row="6" Name="AdjustFeesCheckBox" Height="20" VerticalAlignment="Bottom"/>
+                <CheckBox Grid.Column="3" Grid.Row="6" Name="AdjustFeesCheckBox" Height="20" VerticalAlignment="Bottom" IsChecked="{Binding FeesChecked}"/>
 
                 <TextBlock Grid.Column="1" Grid.Row="7" Text="Split fee (DCR/KB)" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <TextBlock.Style>
@@ -245,6 +245,7 @@
                     <TextBlock Grid.Row="2" Grid.Column="4" Style="{StaticResource shellDescriptionTextBlockStyle}" Margin="0 0 0 0" Text="123" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 </Grid>
             </Grid>
+            <TextBlock Name="PurchaseTicketsSuccessTextBlock" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="MAGICAL SUCCESS TEXT GOES HERE!" Margin="0 20 0 0"/>
         </StackPanel>
     </ScrollViewer>
 </Page>

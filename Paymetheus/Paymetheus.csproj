@@ -195,6 +195,7 @@
       <DependentUpon>TransactionCategoryIcon.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\ImportScriptDialogViewModel.cs" />
+    <Compile Include="ViewModels\PurchaseTicketsViewModel.cs" />
     <Compile Include="ViewModels\ScriptsViewModel.cs" />
     <Compile Include="ViewModels\StakeMiningViewModel.cs" />
     <Compile Include="ViewModels\TransactionHistoryViewModel.cs" />
