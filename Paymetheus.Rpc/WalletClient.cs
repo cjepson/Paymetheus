@@ -332,6 +332,14 @@ namespace Paymetheus.Rpc
             return Tuple.Create(signedTransaction, complete);
         }
 
+        public async Task<StakeInfoResponse> StakeInfo()
+        {
+            var client = new WalletService.WalletServiceClient(_channel);
+            var request = new StakeInfoRequest{};
+            var response = await client.StakeInfoAsync(request, cancellationToken: _tokenSource.Token);
+            return response
+        }
+
         /// <summary>
         /// Begins synchronization of the client with the remote wallet process.
         /// A delegate must be passed to be connected to the wallet's ChangesProcessed event to avoid

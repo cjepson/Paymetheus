@@ -27,6 +27,7 @@
             <Grid Margin="0 40 0 0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="225"/>
+                    <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -47,29 +48,29 @@
                 </Grid.RowDefinitions>
                 <!-- Network statistics -->
                 <TextBlock Margin="0 0 0 0" Text="Network statistics" FontWeight="Bold"  Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0" Grid.Column="0"/>
-                <TextBlock Margin="0 0 0 0" Text="Number of live tickets" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
-                <TextBlock Margin="0 0 0 0" Text="Number of tickets in mempool" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0"/>
-                <TextBlock Margin="0 0 0 0" Text="Ticket difficulty" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0"/>
-                <TextBlock Margin="0 0 0 0" Text="{Binding Path=AccountProperties.AccountName, FallbackValue='TEST1'}" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1"/>
-                <TextBlock Margin="0 0 0 0" Text="{Binding Path=AccountProperties.AccountName, FallbackValue='TEST2'}" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1"/>
-                <TextBlock Margin="0 0 0 0" Text="{Binding Path=AccountProperties.AccountName, FallbackValue='TEST3'}" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Grid.Column="1"/>
+                <TextBlock Margin="0 0 0 0" Text="Number of live tickets" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
+                <TextBlock Margin="0 0 0 0" Text="Number of tickets in mempool" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0"/>
+                <TextBlock Margin="0 0 0 0" Text="Ticket difficulty" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0"/>
+                <TextBlock Margin="0 0 0 0" Text="{Binding Path=AccountProperties.AccountName, FallbackValue='TEST1'}" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2"/>
+                <TextBlock Margin="0 0 0 0" Text="{Binding Path=AccountProperties.AccountName, FallbackValue='TEST2'}" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2"/>
+                <TextBlock Margin="0 0 0 0" Text="{Binding Path=AccountProperties.AccountName, FallbackValue='TEST3'}" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Grid.Column="2"/>
 
                 <!-- Wallet statistics -->
                 <TextBlock Margin="0 0 0 0" Text="Wallet statistics" FontWeight="Bold"  Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="5" Grid.Column="0"/>
-                <TextBlock Margin="0 0 0 0" Text="Owned tickets in mempool" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="6" Grid.Column="0"/>
-                <TextBlock Margin="0 0 0 0" Text="Owned live tickets" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="7" Grid.Column="0"/>
-                <TextBlock Margin="0 0 0 0" Text="Owned immature tickets" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="8" Grid.Column="0"/>
-                <TextBlock Margin="0 0 0 0" Text="Tickets missed" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="9" Grid.Column="0"/>
-                <TextBlock Margin="0 0 0 0" Text="Tickets revoked" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="10" Grid.Column="0"/>
-                <TextBlock Margin="0 0 0 0" Text="Tickets voted" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="11" Grid.Column="0"/>
-                <TextBlock Margin="0 0 0 0" Text="Total subsidy earned" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="12" Grid.Column="0"/>
-                <TextBlock Margin="0 0 0 0" Text="{Binding Path=AccountProperties.AccountName, FallbackValue='TEST1'}" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="6" Grid.Column="1"/>
-                <TextBlock Margin="0 0 0 0" Text="{Binding Path=AccountProperties.AccountName, FallbackValue='TEST2'}" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="7" Grid.Column="1"/>
-                <TextBlock Margin="0 0 0 0" Text="{Binding Path=AccountProperties.AccountName, FallbackValue='TEST3'}" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="8" Grid.Column="1"/>
-                <TextBlock Margin="0 0 0 0" Text="{Binding Path=AccountProperties.AccountName, FallbackValue='TEST4'}" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="9" Grid.Column="1"/>
-                <TextBlock Margin="0 0 0 0" Text="{Binding Path=AccountProperties.AccountName, FallbackValue='TEST5'}" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="10" Grid.Column="1"/>
-                <TextBlock Margin="0 0 0 0" Text="{Binding Path=AccountProperties.AccountName, FallbackValue='TEST6'}" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="11" Grid.Column="1"/>
-                <TextBlock Margin="0 0 0 0" Text="{Binding Path=AccountProperties.AccountName, FallbackValue='TEST7'}" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="12" Grid.Column="1"/>
+                <TextBlock Margin="0 0 0 0" Text="Owned tickets in mempool" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="6" Grid.Column="0"/>
+                <TextBlock Margin="0 0 0 0" Text="Owned live tickets" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="7" Grid.Column="0"/>
+                <TextBlock Margin="0 0 0 0" Text="Owned immature tickets" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="8" Grid.Column="0"/>
+                <TextBlock Margin="0 0 0 0" Text="Tickets missed" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="9" Grid.Column="0"/>
+                <TextBlock Margin="0 0 0 0" Text="Tickets revoked" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="10" Grid.Column="0"/>
+                <TextBlock Margin="0 0 0 0" Text="Tickets voted" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="11" Grid.Column="0"/>
+                <TextBlock Margin="0 0 0 0" Text="Total subsidy earned" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="12" Grid.Column="0"/>
+                <TextBlock Margin="0 0 0 0" Text="{Binding Path=AccountProperties.AccountName, FallbackValue='TEST1'}" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="6" Grid.Column="2"/>
+                <TextBlock Margin="0 0 0 0" Text="{Binding Path=AccountProperties.AccountName, FallbackValue='TEST2'}" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="7" Grid.Column="2"/>
+                <TextBlock Margin="0 0 0 0" Text="{Binding Path=AccountProperties.AccountName, FallbackValue='TEST3'}" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="8" Grid.Column="2"/>
+                <TextBlock Margin="0 0 0 0" Text="{Binding Path=AccountProperties.AccountName, FallbackValue='TEST4'}" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="9" Grid.Column="2"/>
+                <TextBlock Margin="0 0 0 0" Text="{Binding Path=AccountProperties.AccountName, FallbackValue='TEST5'}" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="10" Grid.Column="2"/>
+                <TextBlock Margin="0 0 0 0" Text="{Binding Path=AccountProperties.AccountName, FallbackValue='TEST6'}" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="11" Grid.Column="2"/>
+                <TextBlock Margin="0 0 0 0" Text="{Binding Path=AccountProperties.AccountName, FallbackValue='TEST7'}" Style="{StaticResource shellDescriptionTextBlockStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="12" Grid.Column="2"/>
             </Grid>
         </StackPanel>
     </ScrollViewer>
