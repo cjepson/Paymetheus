@@ -14,7 +14,7 @@ namespace Paymetheus.ViewModels
         public static object RequestViewModel => SingletonViewModelLocator.Resolve("Request");
         public static object TransactionHistoryViewModel => SingletonViewModelLocator.Resolve("History");
         public static object ScriptsViewModel => SingletonViewModelLocator.Resolve("Scripts");
-        //public static object StakeMiningViewModel => SingletonViewModelLocator.Resolve("StakeMining");
+        public static object StakeMiningViewModel => SingletonViewModelLocator.Resolve("StakeMining");
         //public static object PurchaseTicketsViewModel => SingletonViewModelLocator.Resolve("PurchaseTickets");
     }
 }

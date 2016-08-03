@@ -196,6 +196,7 @@
     </Compile>
     <Compile Include="ViewModels\ImportScriptDialogViewModel.cs" />
     <Compile Include="ViewModels\ScriptsViewModel.cs" />
+    <Compile Include="ViewModels\StakeMiningViewModel.cs" />
     <Compile Include="ViewModels\TransactionHistoryViewModel.cs" />
     <Compile Include="Validation\AmountValidator.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />

@@ -332,12 +332,25 @@ namespace Paymetheus.Rpc
             return Tuple.Create(signedTransaction, complete);
         }
 
-        public async Task<StakeInfoResponse> StakeInfo()
+        public async Task<StakeInfoProperties> StakeInfoAsync()
         {
             var client = new WalletService.WalletServiceClient(_channel);
             var request = new StakeInfoRequest{};
             var response = await client.StakeInfoAsync(request, cancellationToken: _tokenSource.Token);
-            return response
+            var properties = new StakeInfoProperties
+            {
+                PoolSize = response.PoolSize,
+                AllMempoolTickets = response.AllMempoolTix,
+                OwnMempoolTickets = response.OwnMempoolTix,
+                Immature = response.Immature,
+                Live = response.Live,
+                Voted = response.Voted,
+                Missed = response.Missed,
+                Revoked = response.Revoked,
+                Expired = response.Expired,
+                TotalSubsidy = response.TotalSubsidy,
+            };
+            return properties;  
         }
 
         /// <summary>
