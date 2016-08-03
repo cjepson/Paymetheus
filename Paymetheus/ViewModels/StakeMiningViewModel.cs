@@ -17,6 +17,7 @@ namespace Paymetheus.ViewModels
         public StakeMiningViewModel() : base()
         {
             FetchStakeInfoCommand = new DelegateCommand(FetchStakeInfoAction);
+            FetchStakeInfoCommand.Execute(null);
         }
 
         private StakeInfoProperties _stakeInfoProperties;
@@ -26,6 +27,13 @@ namespace Paymetheus.ViewModels
             internal set { _stakeInfoProperties = value; RaisePropertyChanged(); }
         }
 
+        private StakeDifficultyProperties _stakeDifficultyProperties;
+        public StakeDifficultyProperties StakeDifficultyProperties
+        {
+            get { return _stakeDifficultyProperties; }
+            internal set { _stakeDifficultyProperties = value; RaisePropertyChanged(); }
+        }
+
         public ICommand FetchStakeInfoCommand { get; }
 
         private async void FetchStakeInfoAction()
@@ -33,6 +41,10 @@ namespace Paymetheus.ViewModels
             try
             {
                 StakeInfoProperties = await App.Current.Synchronizer.WalletRpcClient.StakeInfoAsync();
+                StakeDifficultyProperties = await App.Current.Synchronizer.WalletRpcClient.StakeDifficultyAsync();
+            }
+            catch (RpcException ex) when (ex.Status.StatusCode == StatusCode.FailedPrecondition)
+            {
             }
             catch (Exception ex)
             {

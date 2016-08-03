@@ -332,6 +332,53 @@ namespace Paymetheus.Rpc
             return Tuple.Create(signedTransaction, complete);
         }
 
+        public async Task<List<Blake256Hash>> PurchaseTicketsAsync(Account account, Amount spendLimit, 
+            int reqConfs, Address ticketAddress, uint number, Address poolAddress, double poolFees, 
+            uint expiry, Amount txFee, Amount ticketFee, string passphrase)
+        {
+            var ticketAddressStr = "";
+            if (ticketAddress != null) {
+                ticketAddressStr = ticketAddress.ToString();
+            }
+            var poolAddressStr = "";
+            if (poolAddress != null)
+            {
+                poolAddressStr = poolAddress.ToString();
+            }
+
+            var client = new WalletService.WalletServiceClient(_channel);
+            var request = new PurchaseTicketsRequest
+            {
+                Passphrase = ByteString.CopyFromUtf8(passphrase),
+                Account = account.AccountNumber,
+                SpendLimit = spendLimit,
+                RequiredConfirmations = (uint)reqConfs,
+                TicketAddress = ticketAddressStr,
+                NumTickets = number,
+                PoolAddress = poolAddressStr,
+                PoolFees = poolFees,
+                Expiry = expiry,
+                TxFee = txFee,
+                TicketFee = ticketFee,
+            };
+            var response = await client.PurchaseTicketsAsync(request, cancellationToken: _tokenSource.Token);
+
+            return response.TicketHashes.Select(h => new Blake256Hash(h.ToByteArray())).ToList();
+        }
+
+        public async Task<StakeDifficultyProperties> StakeDifficultyAsync()
+        {
+            var client = new WalletService.WalletServiceClient(_channel);
+            var request = new TicketPriceRequest { };
+            var response = await client.TicketPriceAsync(request, cancellationToken: _tokenSource.Token);
+            var properties = new StakeDifficultyProperties
+            {
+                Height = response.Height,
+                Price = response.TicketPrice,
+            };
+            return properties;
+        }
+
         public async Task<StakeInfoProperties> StakeInfoAsync()
         {
             var client = new WalletService.WalletServiceClient(_channel);
