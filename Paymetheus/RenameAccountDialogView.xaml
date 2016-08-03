@@ -15,12 +15,12 @@
             </StackPanel>
             <StackPanel>
                 <Label>
-                    <TextBlock FontSize="18">
+                    <TextBlock FontSize="18" Foreground="#FF0C1E3E">
                         <Run Text="Rename account"/>
                         <Run Text="{Binding CurrentAccountName, Mode=OneWay, FallbackValue=Current Name}"/>
                     </TextBlock>
                 </Label>
-                <Label Content="New name:"/>
+                <Label Content="New name:" Foreground="#FF0C1E3E"/>
                 <TextBox Name="textBox" Margin="5 2" Padding="2"
                      Text="{Binding NewAccountName, Mode=OneWayToSource}"
                      f:AttachableProperties.UpdateSourceOnEnterProperty="TextBox.Text"/>

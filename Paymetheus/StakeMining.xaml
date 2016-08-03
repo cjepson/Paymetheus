@@ -10,7 +10,7 @@
       WindowTitle="Page"
       FlowDirection="LeftToRight"
       WindowWidth="640" WindowHeight="480" d:DesignWidth="640" d:DesignHeight="480"
-      DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=RequestViewModel}" Loaded="Page_Loaded">
+      DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=StakeMiningViewModel}" Loaded="Page_Loaded">
 
     <ScrollViewer Style="{StaticResource MainPaneScrollViewerStyle}">
         <StackPanel Margin="40 20 40 0">
