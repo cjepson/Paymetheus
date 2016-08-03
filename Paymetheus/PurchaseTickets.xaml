@@ -50,7 +50,7 @@
                           Style="{DynamicResource ComboBoxStyleWithCurrency}" Foreground="#FF2970FF" ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"/>
 
                 <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Ticket address" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <TextBox Grid.Column="3" Grid.Row="1" Name="TicketAddressTextBox" Height="20" VerticalAlignment="Center"/>
+                <TextBox Grid.Column="3" Grid.Row="1" Name="TicketAddressTextBox" Height="20" VerticalAlignment="Center" TextAlignment="Left" Text="{Binding TicketAddressString, Mode=OneWayToSource, ValidatesOnExceptions=True}"/>
 
                 <TextBlock Grid.Column="1" Grid.Row="2" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Using a pool?" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <CheckBox Grid.Column="3" Grid.Row="2" Name="UsingAPoolCheckBox" Height="20" VerticalAlignment="Bottom" IsChecked="{Binding PoolChecked}"/>
@@ -73,7 +73,7 @@
                     </TextBlock.Style>
                 </TextBlock>
 
-                <TextBox Grid.Column="3" Grid.Row="3" Name="PoolAddressTextBox" Height="20" VerticalAlignment="Center">
+                <TextBox Grid.Column="3" Grid.Row="3" Name="PoolAddressTextBox" Height="20" VerticalAlignment="Center" TextAlignment="Left" Text="{Binding PoolAddressString, Mode=OneWayToSource, ValidatesOnExceptions=True}">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Visibility" Value="Hidden" />
@@ -110,16 +110,13 @@
                     </TextBlock.Style>
                 </TextBlock>
 
-                <TextBox Grid.Column="3" Grid.Row="4" Name="PoolFeesTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" TextAlignment="Right">
+                <TextBox Grid.Column="3" Grid.Row="4" Name="PoolFeesTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" TextAlignment="Right" Text="{Binding PoolFeesString, Mode=OneWayToSource, ValidatesOnExceptions=True}">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Visibility" Value="Hidden" />
-                            <Setter Property="Text" Value="0.0" />
                             <Style.Triggers>
-                                <!-- Zero this field if it becomes unchecked -->
                                 <DataTrigger Binding="{Binding IsChecked, ElementName=UsingAPoolCheckBox}" Value="False">
                                     <Setter Property="Visibility" Value="Hidden" />
-                                    <Setter Property="Text" Value="0.0" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsChecked, ElementName=UsingAPoolCheckBox}" Value="True">
                                     <Setter Property="Visibility" Value="Visible" />
@@ -157,12 +154,10 @@
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Visibility" Value="Hidden" />
-                            <Setter Property="Text" Value="0.01" />
                             <Style.Triggers>
                                 <!-- Write the default to this field if it becomes unchecked -->
                                 <DataTrigger Binding="{Binding IsChecked, ElementName=AdjustFeesCheckBox}" Value="False">
                                     <Setter Property="Visibility" Value="Hidden" />
-                                    <Setter Property="Text" Value="0.01" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsChecked, ElementName=AdjustFeesCheckBox}" Value="True">
                                     <Setter Property="Visibility" Value="Visible" />
@@ -194,12 +189,10 @@
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Visibility" Value="Hidden" />
-                            <Setter Property="Text" Value="0.01" />
                             <Style.Triggers>
                                 <!-- Write the default to this field if it becomes unchecked -->
                                 <DataTrigger Binding="{Binding IsChecked, ElementName=AdjustFeesCheckBox}" Value="False">
                                     <Setter Property="Visibility" Value="Hidden" />
-                                    <Setter Property="Text" Value="0.01" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsChecked, ElementName=AdjustFeesCheckBox}" Value="True">
                                     <Setter Property="Visibility" Value="Visible" />
@@ -210,7 +203,7 @@
                 </TextBox>
 
                 <TextBlock Grid.Column="1" Grid.Row="9" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Number" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <TextBox Grid.Column="3" Grid.Row="9" Name="NumberTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" TextAlignment="Right"/>
+                <TextBox Grid.Column="3" Grid.Row="9" Name="NumberTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" TextAlignment="Right" Text="{Binding NumberString, Mode=OneWayToSource, ValidatesOnExceptions=True}"/>
             </Grid>
 
             <Grid Margin="0 20 0 0">
@@ -218,12 +211,12 @@
                     <ColumnDefinition Width="10*"/>
                     <ColumnDefinition Width="125"/>
                     <ColumnDefinition Width="20"/>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="150"/>
                     <ColumnDefinition Width="20*"/>
                 </Grid.ColumnDefinitions>
 
-                <ContentControl Grid.Row="1" Grid.Column="1" ContentTemplate="{StaticResource buttonTemplate}" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding PurchaseTicketsExecute}" Width="100"/>
+                <Button Grid.Row="1" Grid.Column="1" Style="{DynamicResource ButtonBlue}" Content="PURCHASE"  HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding PurchaseTicketsCommand}" Width="100"/>
                 <Grid Grid.Column="3">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"/>
@@ -240,8 +233,8 @@
                         <RowDefinition Height="20"/>
                         <RowDefinition Height="20"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="4" Style="{StaticResource shellDescriptionTextBlockStyle}" Margin="0 0 0 0" Text="123.456" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="1" Grid.Column="4" Style="{StaticResource shellDescriptionTextBlockStyle}" Margin="0 0 0 0" Text="789.123" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="0" Grid.Column="4" Style="{StaticResource shellDescriptionTextBlockStyle}" Margin="0 0 0 0" Text="{Binding StakeDifficultyProperties.Price}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="1" Grid.Column="4" Style="{StaticResource shellDescriptionTextBlockStyle}" Margin="0 0 0 0" Text="{Binding SelectedAccount.Balances.SpendableBalance}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     <TextBlock Grid.Row="2" Grid.Column="4" Style="{StaticResource shellDescriptionTextBlockStyle}" Margin="0 0 0 0" Text="123" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 </Grid>
             </Grid>
