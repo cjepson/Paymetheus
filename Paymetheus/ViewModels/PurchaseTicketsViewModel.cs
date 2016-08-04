@@ -1,8 +1,8 @@
 ﻿using Paymetheus.Decred;
+using Paymetheus.Decred.Util;
 using Paymetheus.Decred.Wallet;
 using Paymetheus.Framework;
 using Grpc.Core;
-using Paymetheus.Decred.Util;
 using System;
 using System.Windows;
 using System.Collections.Generic;
@@ -51,146 +51,206 @@ namespace Paymetheus.ViewModels
             set { _selectedAccount = value; RaisePropertyChanged(); }
         }
 
-        private Address _ticketAddress;
+        private Address _ticketAddress = null;
         public string TicketAddressString
         {
             get { return _ticketAddress.ToString(); }
             set {
+                _ticketAddress = null;
                 if (value == "") {
-                    _ticketAddress = null;
                     return;
                 }
 
-                try { _ticketAddress = Address.Decode(value); }
-                catch (Exception ex) {
-                    _ticketAddress = null;
-                    MessageBox.Show(ex.Message, "Invalid ticket address");
+                try
+                {
+                    _ticketAddress = Address.Decode(value);
                 }
-
-                RaisePropertyChanged();
+                finally
+                {
+                    _settingsAreValid();
+                }
             }
         }
 
-        private Address _poolAddress;
+        private Address _poolAddress = null;
         public string PoolAddressString
         {
             get { return _poolAddress.ToString(); }
             set
             {
+                _poolAddress = null;
                 if (value == "")
                 {
-                    _poolAddress = null;
                     return;
                 }
 
-                try { _poolAddress = Address.Decode(value); }
-                catch (Exception ex)
+                try
                 {
-                    _poolAddress = null;
-                    MessageBox.Show(ex.Message, "Invalid pool address");
+                    _poolAddress = Address.Decode(value);
                 }
-
-                RaisePropertyChanged();
+                finally
+                {
+                    _settingsAreValid();
+                }
             }
         }
 
-        private double _poolFees;
-        public string PoolFeesString
+        private double _poolFees = 0.0;
+        public double PoolFees
         {
-            get { return _poolFees.ToString(); }
+            get { return _poolFees; }
             set
             {
-                if (value == "")
-                {
-                    _poolFees = 0.0;
-                    return;
-                }
-
-                try { _poolFees = double.Parse(value); }
-                catch (Exception ex)
-                {
-                    _poolFees = 0.0;
-                    MessageBox.Show(ex.Message, "Invalid pool fees set");
-                    return;
-                }
-
-                var _testPoolFees = _poolFees * 100.0;
+                var _testPoolFees = value * 100.0;
                 if (_testPoolFees != Math.Floor(_testPoolFees))
                 {
                     _poolFees = 0.0;
-                    MessageBox.Show("Bad pool fees; pool fees must be between 0.00 and 100.00%");
-                    return;
+                    throw new ArgumentException("Bad pool fees; pool fees must be between 0.00 and 100.00%");
                 }
 
                 if (_testPoolFees > 10000.0)
                 {
                     _poolFees = 0.0;
-                    MessageBox.Show("Bad pool fees; pool fees must be less than 100.00%");
-                    return;
+                    throw new ArgumentException("Bad pool fees; pool fees must be less than 100.00%");
                 }
 
                 if (_testPoolFees < 1.0)
                 {
                     _poolFees = 0.0;
-                    MessageBox.Show("Bad pool fees; pool fees must be greater than 0.00%");
-                    return;
+                    throw new ArgumentException("Bad pool fees; pool fees must be greater than 0.00%");
                 }
 
-                RaisePropertyChanged();
+                _poolFees = value;
+                _settingsAreValid();
             }
         }
 
-        private int _number = 0;
-        public string NumberString
+        private long _number = 0;
+        public long Number
         {
-            get { return _number.ToString(); }
+            get { return _number; }
             set
             {
-                if (value == "")
+                if (value < 0)
                 {
                     _number = 0;
-                    return;
-                }
-
-                try { _number = int.Parse(value); }
-                catch (Exception ex)
-                {
-                    _number = 0;
-                    MessageBox.Show(ex.Message, "Invalid number of tickets set");
-                    return;
-                }
-
-                if (_number < 0)
-                {
-                    _number = 0;
-                    MessageBox.Show("Negative number of tickets set", "Number of tickets error");
-                    return;
+                    throw new ArgumentException("Negative number of tickets passed");
                 }
 
                 if (_selectedAccount == null)
                 {
-                    MessageBox.Show("No account selected", "Number of tickets error");
-                    return;
+                    _number = 0;
+                    throw new ArgumentException("No account selected");
                 }
 
                 if (_selectedAccount.Balances.SpendableBalance <= 0) {
-                    MessageBox.Show("Not enough funds", "Number of tickets error");
-                    return;
+                    _number = 0;
+                    throw new ArgumentException("Empty account");
                 }
 
-                if (_stakeDifficultyProperties.Price * (Amount)_number < _selectedAccount.Balances.SpendableBalance)
+                if ((Amount)(_stakeDifficultyProperties.Price * value) > _selectedAccount.Balances.SpendableBalance)
                 {
                     _number = 0;
-                    MessageBox.Show("Not enough funds", "Number of tickets error");
-                    return;
-                } 
+                    string errorString = "Not enough funds; have " +
+                        _selectedAccount.Balances.SpendableBalance.ToString() + " want " +
+                        ((Amount)(_stakeDifficultyProperties.Price * value)).ToString();
+                    throw new ArgumentException(errorString);
+                }
+
+                _number = value;
+                _settingsAreValid();
+            }
+        }
+
+        // The default expiry is 16.
+        private int _expiry = 16;
+        private int _minExpiry = 2;
+        public int Expiry
+        {
+            get { return _expiry; }
+            set
+            {
+                if (value <= _minExpiry)
+                {
+                    _expiry = 0;
+                    throw new ArgumentException("Expiry must be a minimum of 2 blocks");
+                }
+
+                _expiry = value;
+                _settingsAreValid();
+            }
+        }
+
+        // TODO Declare this as a global somewhere?
+        private Amount _minFeeAmount = Denomination.Decred.AmountFromDouble(0.01000000);
+        private Amount _maxFeeAmount = Denomination.Decred.AmountFromDouble(0.99999999);
+
+        private Amount _splitFee = 0;
+        public double SplitFee
+        {
+            get { return _splitFee; }
+            set
+            {
+                var _testAmount = Denomination.Decred.AmountFromDouble(value);
+
+                if (_testAmount < _minFeeAmount)
+                {
+                    _splitFee = 0;
+                    throw new ArgumentException("Too small fee passed (must be >= 0.01000000 DCR/KB)");
+                }
+
+                if (_testAmount > _maxFeeAmount)
+                {
+                    _splitFee = 0;
+                    throw new ArgumentException("Too big fee passed (must be <= 0.99999999 DCR/KB)");
+                }
+
+                _splitFee = _testAmount;
+                _settingsAreValid();
+            }
+        }
+
+        private Amount _ticketFee = 0;
+        public double TicketFee
+        {
+            get { return _ticketFee; }
+            set
+            {
+                var _testAmount = Denomination.Decred.AmountFromDouble(value);
+
+                if (_testAmount < _minFeeAmount)
+                {
+                    _ticketFee = 0;
+                    throw new ArgumentException("Too small fee passed (must be >= 0.01000000 DCR/KB)");
+                }
+
+                if (_testAmount > _maxFeeAmount)
+                {
+                    _ticketFee = 0;
+                    throw new ArgumentException("Too big fee passed (must be <= 0.99999999 DCR/KB)");
+                }
+
+                _ticketFee = _testAmount;
+                _settingsAreValid();
             }
         }
 
         private void _settingsAreValid()
         {
+            if (_selectedAccount == null)
+            {
+                _purchaseTickets.Executable = false;
+                return;
+            }
+
+            MessageBox.Show(_ticketAddress.ToString());
             if (_ticketAddress == null)
             {
+                _purchaseTickets.Executable = false;
+                return;
+            }
+
+            if (_expiry < _minExpiry) {
                 _purchaseTickets.Executable = false;
                 return;
             }
@@ -199,6 +259,36 @@ namespace Paymetheus.ViewModels
             {
                 _purchaseTickets.Executable = false;
                 return;
+            }
+
+            if (_poolChecked)
+            {
+                if (_poolAddress == null)
+                {
+                    _purchaseTickets.Executable = false;
+                    return;
+                }
+
+                if (_poolFees == 0.0)
+                {
+                    _purchaseTickets.Executable = false;
+                    return;
+                }
+            }
+
+            if (_feesChecked)
+            {
+                if (_splitFee == 0)
+                {
+                    _purchaseTickets.Executable = false;
+                    return;
+                }
+
+                if (_ticketFee == 0)
+                {
+                    _purchaseTickets.Executable = false;
+                    return;
+                }
             }
 
             _purchaseTickets.Executable = true;

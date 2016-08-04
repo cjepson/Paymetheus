@@ -50,7 +50,8 @@
                           Style="{DynamicResource ComboBoxStyleWithCurrency}" Foreground="#FF2970FF" ItemContainerStyle="{DynamicResource ComboBoxItemStyle}"/>
 
                 <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Ticket address" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <TextBox Grid.Column="3" Grid.Row="1" Name="TicketAddressTextBox" Height="20" VerticalAlignment="Center" TextAlignment="Left" Text="{Binding TicketAddressString, Mode=OneWayToSource, ValidatesOnExceptions=True}"/>
+                <TextBox Grid.Column="3" Grid.Row="1" Name="TicketAddressTextBox" Height="20" VerticalAlignment="Center" TextAlignment="Left" 
+                         Text="{Binding TicketAddressString, Mode=OneWayToSource, ValidatesOnExceptions=True}" Style="{StaticResource tooltipAlertTextBox}"/>
 
                 <TextBlock Grid.Column="1" Grid.Row="2" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Using a pool?" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <CheckBox Grid.Column="3" Grid.Row="2" Name="UsingAPoolCheckBox" Height="20" VerticalAlignment="Bottom" IsChecked="{Binding PoolChecked}"/>
@@ -87,6 +88,9 @@
                                 <DataTrigger Binding="{Binding IsChecked, ElementName=UsingAPoolCheckBox}" Value="True">
                                     <Setter Property="Visibility" Value="Visible" />
                                 </DataTrigger>
+                                <Trigger Property="Validation.HasError" Value="True">
+                                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                                </Trigger>
                             </Style.Triggers>
                         </Style>
                     </TextBox.Style>
@@ -110,7 +114,8 @@
                     </TextBlock.Style>
                 </TextBlock>
 
-                <TextBox Grid.Column="3" Grid.Row="4" Name="PoolFeesTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" TextAlignment="Right" Text="{Binding PoolFeesString, Mode=OneWayToSource, ValidatesOnExceptions=True}">
+                <TextBox Grid.Column="3" Grid.Row="4" Name="PoolFeesTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" 
+                         Width="50" TextAlignment="Right" Text="{Binding PoolFees, Mode=OneWayToSource, ValidatesOnExceptions=True}">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Visibility" Value="Hidden" />
@@ -121,13 +126,17 @@
                                 <DataTrigger Binding="{Binding IsChecked, ElementName=UsingAPoolCheckBox}" Value="True">
                                     <Setter Property="Visibility" Value="Visible" />
                                 </DataTrigger>
+                                <Trigger Property="Validation.HasError" Value="True">
+                                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                                </Trigger>
                             </Style.Triggers>
                         </Style>
                     </TextBox.Style>
                 </TextBox>
 
                 <TextBlock Grid.Column="1" Grid.Row="5" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Expiry (blocks)" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <TextBox Grid.Column="3" Grid.Row="5" Name="ExpiryTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" Text="16" TextAlignment="Right"/>
+                <TextBox Grid.Column="3" Grid.Row="5" Name="ExpiryTextBox" Height="20" VerticalAlignment="Center" Text="{Binding Expiry, Mode=OneWayToSource, ValidatesOnExceptions=True}"
+                         HorizontalAlignment="Left" Width="50" TextAlignment="Right"/>
 
                 <TextBlock Grid.Column="1" Grid.Row="6" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Adjust fees?" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <CheckBox Grid.Column="3" Grid.Row="6" Name="AdjustFeesCheckBox" Height="20" VerticalAlignment="Bottom" IsChecked="{Binding FeesChecked}"/>
@@ -150,7 +159,8 @@
                     </TextBlock.Style>
                 </TextBlock>
 
-                <TextBox Grid.Column="3" Grid.Row="7" Name="SplitFeeTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="80" TextAlignment="Right">
+                <TextBox Grid.Column="3" Grid.Row="7" Name="SplitFeeTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" 
+                         Text="{Binding SplitFee, Mode=OneWayToSource, ValidatesOnExceptions=True}" Width="80" TextAlignment="Right">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Visibility" Value="Hidden" />
@@ -162,6 +172,9 @@
                                 <DataTrigger Binding="{Binding IsChecked, ElementName=AdjustFeesCheckBox}" Value="True">
                                     <Setter Property="Visibility" Value="Visible" />
                                 </DataTrigger>
+                                <Trigger Property="Validation.HasError" Value="True">
+                                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                                </Trigger>
                             </Style.Triggers>
                         </Style>
                     </TextBox.Style>
@@ -185,7 +198,8 @@
                     </TextBlock.Style>
                 </TextBlock>
                 
-                <TextBox Grid.Column="3" Grid.Row="8" Name="TicketFeeTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="80" TextAlignment="Right">
+                <TextBox Grid.Column="3" Grid.Row="8" Name="TicketFeeTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" 
+                         Text="{Binding TicketFee, Mode=OneWayToSource, ValidatesOnExceptions=True}" Width="80" TextAlignment="Right">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Visibility" Value="Hidden" />
@@ -197,13 +211,17 @@
                                 <DataTrigger Binding="{Binding IsChecked, ElementName=AdjustFeesCheckBox}" Value="True">
                                     <Setter Property="Visibility" Value="Visible" />
                                 </DataTrigger>
+                                <Trigger Property="Validation.HasError" Value="True">
+                                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                                </Trigger>
                             </Style.Triggers>
                         </Style>
                     </TextBox.Style>
                 </TextBox>
 
                 <TextBlock Grid.Column="1" Grid.Row="9" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Number" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <TextBox Grid.Column="3" Grid.Row="9" Name="NumberTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" TextAlignment="Right" Text="{Binding NumberString, Mode=OneWayToSource, ValidatesOnExceptions=True}"/>
+                <TextBox Grid.Column="3" Grid.Row="9" Name="NumberTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" TextAlignment="Right" 
+                         Text="{Binding Number, Mode=OneWayToSource, ValidatesOnExceptions=True}" Style="{StaticResource tooltipAlertTextBox}"/>
             </Grid>
 
             <Grid Margin="0 20 0 0">
@@ -216,7 +234,7 @@
                     <ColumnDefinition Width="20*"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Row="1" Grid.Column="1" Style="{DynamicResource ButtonBlue}" Content="PURCHASE"  HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding PurchaseTicketsCommand}" Width="100"/>
+                <Button Grid.Row="1" Grid.Column="1" Style="{DynamicResource ButtonBlue}" Content="PURCHASE"  HorizontalAlignment="Center" VerticalAlignment="Center" Command="{Binding Execute}" Width="100"/>
                 <Grid Grid.Column="3">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"/>
