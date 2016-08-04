@@ -51,7 +51,7 @@
 
                 <TextBlock Grid.Column="1" Grid.Row="1" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Ticket address" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <TextBox Grid.Column="3" Grid.Row="1" Name="TicketAddressTextBox" Height="20" VerticalAlignment="Center" TextAlignment="Left" 
-                         Text="{Binding TicketAddressString, Mode=OneWayToSource, ValidatesOnExceptions=True}" Style="{StaticResource tooltipAlertTextBox}"/>
+                         Text="{Binding TicketAddressString, Mode=TwoWay, ValidatesOnExceptions=True}" Style="{StaticResource tooltipAlertTextBox}"/>
 
                 <TextBlock Grid.Column="1" Grid.Row="2" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Using a pool?" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <CheckBox Grid.Column="3" Grid.Row="2" Name="UsingAPoolCheckBox" Height="20" VerticalAlignment="Bottom" IsChecked="{Binding PoolChecked}"/>
@@ -74,7 +74,7 @@
                     </TextBlock.Style>
                 </TextBlock>
 
-                <TextBox Grid.Column="3" Grid.Row="3" Name="PoolAddressTextBox" Height="20" VerticalAlignment="Center" TextAlignment="Left" Text="{Binding PoolAddressString, Mode=OneWayToSource, ValidatesOnExceptions=True}">
+                <TextBox Grid.Column="3" Grid.Row="3" Name="PoolAddressTextBox" Height="20" VerticalAlignment="Center" TextAlignment="Left" Text="{Binding PoolAddressString, Mode=TwoWay, ValidatesOnExceptions=True}">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Visibility" Value="Hidden" />
@@ -115,7 +115,7 @@
                 </TextBlock>
 
                 <TextBox Grid.Column="3" Grid.Row="4" Name="PoolFeesTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" 
-                         Width="50" TextAlignment="Right" Text="{Binding PoolFees, Mode=OneWayToSource, ValidatesOnExceptions=True}">
+                         Width="50" TextAlignment="Right" Text="{Binding PoolFees, Mode=TwoWay, ValidatesOnExceptions=True}">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Visibility" Value="Hidden" />
@@ -135,7 +135,7 @@
                 </TextBox>
 
                 <TextBlock Grid.Column="1" Grid.Row="5" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Expiry (blocks)" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <TextBox Grid.Column="3" Grid.Row="5" Name="ExpiryTextBox" Height="20" VerticalAlignment="Center" Text="{Binding Expiry, Mode=OneWayToSource, ValidatesOnExceptions=True}"
+                <TextBox Grid.Column="3" Grid.Row="5" Name="ExpiryTextBox" Height="20" VerticalAlignment="Center" Text="{Binding Expiry, Mode=TwoWay, ValidatesOnExceptions=True}"
                          HorizontalAlignment="Left" Width="50" TextAlignment="Right"/>
 
                 <TextBlock Grid.Column="1" Grid.Row="6" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Adjust fees?" HorizontalAlignment="Right" VerticalAlignment="Center"/>
@@ -160,7 +160,7 @@
                 </TextBlock>
 
                 <TextBox Grid.Column="3" Grid.Row="7" Name="SplitFeeTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" 
-                         Text="{Binding SplitFee, Mode=OneWayToSource, ValidatesOnExceptions=True}" Width="80" TextAlignment="Right">
+                         Text="{Binding SplitFee, Mode=TwoWay, ValidatesOnExceptions=True}" Width="80" TextAlignment="Right">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Visibility" Value="Hidden" />
@@ -199,7 +199,7 @@
                 </TextBlock>
                 
                 <TextBox Grid.Column="3" Grid.Row="8" Name="TicketFeeTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" 
-                         Text="{Binding TicketFee, Mode=OneWayToSource, ValidatesOnExceptions=True}" Width="80" TextAlignment="Right">
+                         Text="{Binding TicketFee, Mode=TwoWay, ValidatesOnExceptions=True}" Width="80" TextAlignment="Right">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Visibility" Value="Hidden" />
@@ -221,7 +221,7 @@
 
                 <TextBlock Grid.Column="1" Grid.Row="9" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Number" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <TextBox Grid.Column="3" Grid.Row="9" Name="NumberTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" TextAlignment="Right" 
-                         Text="{Binding Number, Mode=OneWayToSource, ValidatesOnExceptions=True}" Style="{StaticResource tooltipAlertTextBox}"/>
+                         Text="{Binding Number, Mode=TwoWay, ValidatesOnExceptions=True}" Style="{StaticResource tooltipAlertTextBox}"/>
             </Grid>
 
             <Grid Margin="0 20 0 0">
@@ -256,7 +256,7 @@
                     <TextBlock Grid.Row="2" Grid.Column="4" Style="{StaticResource shellDescriptionTextBlockStyle}" Margin="0 0 0 0" Text="123" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 </Grid>
             </Grid>
-            <TextBlock Name="PurchaseTicketsSuccessTextBlock" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="MAGICAL SUCCESS TEXT GOES HERE!" Margin="0 20 0 0"/>
+            <TextBlock Name="PurchaseTicketsSuccessTextBlock" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="{Binding ResponseString, Mode=TwoWay}" FontSize="16" Margin="0 20 0 0"/>
         </StackPanel>
     </ScrollViewer>
 </Page>

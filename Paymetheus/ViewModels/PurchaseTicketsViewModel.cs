@@ -15,11 +15,14 @@ namespace Paymetheus.ViewModels
 {
     class PurchaseTicketsViewModel : ViewModelBase
     {
-        private DelegateCommandAsync _purchaseTickets;
-        public ICommand Execute => _purchaseTickets;
-
         public PurchaseTicketsViewModel() : base()
         {
+            var synchronizer = ViewModelLocator.SynchronizerViewModel as SynchronizerViewModel;
+            if (synchronizer != null)
+            {
+                SelectedAccount = synchronizer.Accounts[0];
+            }
+
             FetchStakeDifficultyCommand = new DelegateCommand(FetchStakeDifficultyAction);
             FetchStakeDifficultyCommand.Execute(null);
 
@@ -28,7 +31,8 @@ namespace Paymetheus.ViewModels
             //PurchaseTicketsCommand = new DelegateCommand(PurchaseTicketsAction);
         }
 
-        private List<Blake256Hash> _purchaseTicketHashes;
+        private DelegateCommandAsync _purchaseTickets;
+        public ICommand Execute => _purchaseTickets;
 
         private bool _poolChecked = false;
         public bool PoolChecked
@@ -52,18 +56,21 @@ namespace Paymetheus.ViewModels
         }
 
         private Address _ticketAddress = null;
+        private string _ticketAddressString;
         public string TicketAddressString
         {
             get { return _ticketAddress.ToString(); }
             set {
+                _ticketAddressString = value;
+
                 _ticketAddress = null;
-                if (value == "") {
+                if (_ticketAddressString == "") {
                     return;
                 }
 
                 try
                 {
-                    _ticketAddress = Address.Decode(value);
+                    _ticketAddress = Address.Decode(_ticketAddressString);
                 }
                 finally
                 {
@@ -73,20 +80,23 @@ namespace Paymetheus.ViewModels
         }
 
         private Address _poolAddress = null;
+        private string _poolAddressString;
         public string PoolAddressString
         {
             get { return _poolAddress.ToString(); }
             set
             {
+                _poolAddressString = value;
+
                 _poolAddress = null;
-                if (value == "")
+                if (_poolAddressString == "")
                 {
                     return;
                 }
 
                 try
                 {
-                    _poolAddress = Address.Decode(value);
+                    _poolAddress = Address.Decode(_poolAddressString);
                 }
                 finally
                 {
@@ -188,7 +198,7 @@ namespace Paymetheus.ViewModels
         private Amount _splitFee = 0;
         public double SplitFee
         {
-            get { return _splitFee; }
+            get { return Denomination.Decred.DoubleFromAmount(_splitFee); }
             set
             {
                 var _testAmount = Denomination.Decred.AmountFromDouble(value);
@@ -213,7 +223,7 @@ namespace Paymetheus.ViewModels
         private Amount _ticketFee = 0;
         public double TicketFee
         {
-            get { return _ticketFee; }
+            get { return Denomination.Decred.DoubleFromAmount(_ticketFee); ; }
             set
             {
                 var _testAmount = Denomination.Decred.AmountFromDouble(value);
@@ -243,7 +253,6 @@ namespace Paymetheus.ViewModels
                 return;
             }
 
-            MessageBox.Show(_ticketAddress.ToString());
             if (_ticketAddress == null)
             {
                 _purchaseTickets.Executable = false;
@@ -317,70 +326,69 @@ namespace Paymetheus.ViewModels
 
         private async Task PurchaseTicketsAction()
         {
-            await App.Current.Synchronizer.WalletRpcClient.StakeDifficultyAsync();
-        }
-
-        public ICommand PurchaseTicketsCommand { get; }
-
-        /*
-        private void PurchaseTickets()
-        {
             var shell = ViewModelLocator.ShellViewModel as ShellViewModel;
             if (shell != null)
             {
+                var _account = SelectedAccount.Account;
+                var _spendLimit = StakeDifficultyProperties.Price;
+                int _requiredConfirms = 2; // TODO allow user to set
+                Amount _splitFeeLocal = 0;
+                Amount _ticketFeeLocal = 0;
+
+                if (_feesChecked)
+                {
+                    _splitFeeLocal = _splitFee;
+                    _ticketFeeLocal = _ticketFee;
+                }
+
                 Func<string, Task<bool>> action =
-                    passphrase => PurchaseTicketsWithPassphrase(passphrase);
-                shell.VisibleDialogContent = new PassphraseDialogViewModel(shell, "Enter passphrase to purchase tickets", "PURCHASE", action);
+                    passphrase => PurchaseTicketsWithPassphrase(passphrase, _account, _spendLimit, 
+                    _requiredConfirms, _ticketAddress, (uint)_number, _poolAddress, _poolFees, 
+                    (uint)_expiry, _splitFeeLocal, _ticketFeeLocal);
+                shell.VisibleDialogContent = new PassphraseDialogViewModel(shell, 
+                    "Enter passphrase to purchase tickets", 
+                    "PURCHASE", 
+                    action);
             }
+        }
+
+        private string _responseString = "";
+        public string ResponseString
+        {
+            get { return _responseString; }
+            set { _responseString = value; RaisePropertyChanged(); }
         }
 
         private async Task<bool> PurchaseTicketsWithPassphrase(string passphrase, Account account, 
             Amount spendLimit, int reqConfs, Address ticketAddress, uint number, Address poolAddress,
             double poolFees, uint expiry, Amount txFee, Amount ticketFee)
         {
-            Tuple<Transaction, bool> signingResponse;
+            List<Blake256Hash> purchaseResponse;
             var walletClient = App.Current.Synchronizer.WalletRpcClient;
             try
             {
-                signingResponse = await walletClient.SignTransactionAsync(passphrase, tx);
+                purchaseResponse = await walletClient.PurchaseTicketsAsync(account, spendLimit, 
+                    reqConfs, ticketAddress, number, poolAddress, poolFees, expiry, txFee,
+                    ticketFee, passphrase);
             }
             catch (RpcException ex) when (ex.Status.StatusCode == StatusCode.InvalidArgument)
             {
-                MessageBox.Show(ex.Status.Detail);
+                ResponseString = "Invalid argument error: " + ex.ToString();
                 return false;
             }
-            var complete = signingResponse.Item2;
-            if (!complete)
+            catch (RpcException ex) when (ex.Status.StatusCode == StatusCode.FailedPrecondition)
             {
-                MessageBox.Show("Failed to create transaction input signatures.");
+                ResponseString = "Failed precondition error: " + ex.ToString();
                 return false;
             }
-            var signedTransaction = signingResponse.Item1;
-
-            if (!publishImmediately)
+            catch (Exception ex)
             {
-                MessageBox.Show("Reviewing signed transaction before publishing is not implemented yet.");
+                ResponseString = "Unexpected error: " + ex.ToString();
                 return false;
             }
 
-            var serializedTransaction = signedTransaction.Serialize();
-            var publishedTxHash = await walletClient.PublishTransactionAsync(signedTransaction.Serialize());
-
-            _pendingTransaction = null;
-            _unusedChangeScripts.Remove(SelectedAccount.Account);
-            PendingOutputs.Clear();
-            AddPendingOutput();
-            PublishedTxHash = publishedTxHash.ToString();
-
+            _responseString = "Success! \n" + string.Join("\n", purchaseResponse);
             return true;
         }
-
-        private string _publishedTxHash = "";
-        public string PublishedTxHash
-        {
-            get { return _publishedTxHash; }
-            set { _publishedTxHash = value; RaisePropertyChanged(); }
-        }
-        */
     }
 }

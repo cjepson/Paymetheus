@@ -345,6 +345,9 @@ namespace Paymetheus.Rpc
             {
                 poolAddressStr = poolAddress.ToString();
             }
+            if (poolAddressStr == "") {
+                poolFees = 0.0;
+            }
 
             var client = new WalletService.WalletServiceClient(_channel);
             var request = new PurchaseTicketsRequest
