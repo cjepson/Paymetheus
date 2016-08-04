@@ -384,17 +384,17 @@ namespace Paymetheus.ViewModels
             catch (RpcException ex) when (ex.Status.StatusCode == StatusCode.InvalidArgument)
             {
                 ResponseString = "Invalid argument error: " + ex.ToString();
-                return false;
+                return true;
             }
             catch (RpcException ex) when (ex.Status.StatusCode == StatusCode.FailedPrecondition)
             {
                 ResponseString = "Failed precondition error: " + ex.ToString();
-                return false;
+                return true;
             }
             catch (Exception ex)
             {
                 ResponseString = "Unexpected error: " + ex.ToString();
-                return false;
+                return true;
             }
 
             ResponseString = "Success! \n" + string.Join("\n", purchaseResponse);
