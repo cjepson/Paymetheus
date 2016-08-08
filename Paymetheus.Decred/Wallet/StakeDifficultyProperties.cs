@@ -8,7 +8,7 @@ namespace Paymetheus.Decred.Wallet
 {
     public sealed class StakeDifficultyProperties
     {
-        public int Height { get; set; }
-        public Amount Price { get; set; }
+        public int HeightForTicketPrice { get; set; }
+        public Amount NextTicketPrice { get; set; }
     }
 }

@@ -157,12 +157,12 @@ namespace Paymetheus.ViewModels
                     throw new ArgumentException("Empty account");
                 }
 
-                if ((Amount)(_stakeDifficultyProperties.Price * value) > _selectedAccount.Balances.SpendableBalance)
+                if ((Amount)(_stakeDifficultyProperties.NextTicketPrice * value) > _selectedAccount.Balances.SpendableBalance)
                 {
                     _number = 0;
                     string errorString = "Not enough funds; have " +
                         _selectedAccount.Balances.SpendableBalance.ToString() + " want " +
-                        ((Amount)(_stakeDifficultyProperties.Price * value)).ToString();
+                        ((Amount)(_stakeDifficultyProperties.NextTicketPrice * value)).ToString();
                     throw new ArgumentException(errorString);
                 }
 
@@ -317,8 +317,8 @@ namespace Paymetheus.ViewModels
             {
                 StakeDifficultyProperties = await App.Current.Synchronizer.WalletRpcClient.StakeDifficultyAsync();
                 int _windowSize = 144;
-                int _heightOfChange = ((StakeDifficultyProperties.Height / _windowSize) + 1) * _windowSize;
-                BlocksToRetarget = _heightOfChange - StakeDifficultyProperties.Height;
+                int _heightOfChange = ((StakeDifficultyProperties.HeightForTicketPrice / _windowSize) + 1) * _windowSize;
+                BlocksToRetarget = _heightOfChange - StakeDifficultyProperties.HeightForTicketPrice;
             }
             catch (Exception ex)
             {
@@ -339,9 +339,9 @@ namespace Paymetheus.ViewModels
             if (shell != null)
             {
                 var _account = SelectedAccount.Account;
-                var _spendLimit = StakeDifficultyProperties.Price;
+                var _spendLimit = StakeDifficultyProperties.NextTicketPrice;
                 int _requiredConfirms = 2; // TODO allow user to set
-                uint _expiryHeight = (uint)_expiry + (uint)StakeDifficultyProperties.Height;
+                uint _expiryHeight = (uint)_expiry + (uint)StakeDifficultyProperties.HeightForTicketPrice;
 
                 Amount _splitFeeLocal = 0;
                 Amount _ticketFeeLocal = 0;

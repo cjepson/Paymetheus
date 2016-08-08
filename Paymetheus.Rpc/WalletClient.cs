@@ -376,8 +376,8 @@ namespace Paymetheus.Rpc
             var response = await client.TicketPriceAsync(request, cancellationToken: _tokenSource.Token);
             var properties = new StakeDifficultyProperties
             {
-                Height = response.Height,
-                Price = response.TicketPrice,
+                HeightForTicketPrice = response.Height,
+                NextTicketPrice = response.TicketPrice,
             };
             return properties;
         }
