@@ -10,8 +10,8 @@
     <StackPanel VerticalAlignment="Center">
         <DockPanel FocusManager.FocusedElement="{Binding ElementName=textBox}">
             <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="OK" IsDefault="True" Command="{Binding Execute}" Style="{DynamicResource ButtonBlue}" Width="100" Margin="5"/>
-                <Button Content="Cancel" IsCancel="True" Command="{Binding HideDialogCommand}" Style="{DynamicResource ButtonWhite}" Width="100" Margin="5"/>
+                <Button Content="OK" IsDefault="True" Command="{Binding Execute}" Style="{StaticResource ButtonBlue}" Width="100" Margin="5"/>
+                <Button Content="Cancel" IsCancel="True" Command="{Binding HideDialogCommand}" Style="{StaticResource ButtonWhite}" Width="100" Margin="5"/>
             </StackPanel>
             <StackPanel>
                 <Label Content="Import script" FontSize="18" Foreground="#FF0C1E3E"/>

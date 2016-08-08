@@ -10,7 +10,7 @@
       WindowTitle="Page"
       FlowDirection="LeftToRight"
       WindowWidth="640" WindowHeight="480" d:DesignWidth="640" d:DesignHeight="580"
-      DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=PurchaseTicketsViewModel}" Loaded="Page_Loaded">
+      DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=PurchaseTicketsViewModel}">
 
     <ScrollViewer Style="{StaticResource MainPaneScrollViewerStyle}">
         <StackPanel Margin="40 20 40 0">
@@ -56,18 +56,14 @@
                 <TextBlock Grid.Column="1" Grid.Row="2" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Using a pool?" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <CheckBox Grid.Column="3" Grid.Row="2" Name="UsingAPoolCheckBox" Height="20" VerticalAlignment="Bottom" IsChecked="{Binding PoolChecked}"/>
 
-                <TextBlock Grid.Column="1" Grid.Row="3" Text="Pool address" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <TextBlock Grid.Column="1" Grid.Row="3" Text="Pool address" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                           FontSize="14" Foreground="#FF0C1E3E" TextAlignment="Right" TextWrapping="Wrap">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
-                            <Setter Property="Visibility" Value="Hidden" />
-                            <Setter Property="FontSize" Value="14"/>
-                            <Setter Property="Foreground" Value="#FF0C1E3E"/>
-                            <Setter Property="TextAlignment" Value="Left"/>
-                            <Setter Property="HorizontalAlignment" Value="Left"/>
-                            <Setter Property="TextWrapping" Value="Wrap"/>
+                            <Setter Property="Visibility" Value="Hidden"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsChecked, ElementName=UsingAPoolCheckBox}" Value="True">
-                                    <Setter Property="Visibility" Value="Visible" />
+                                    <Setter Property="Visibility" Value="Visible"/>
                                 </DataTrigger>                  
                             </Style.Triggers>
                         </Style>
@@ -77,14 +73,8 @@
                 <TextBox Grid.Column="3" Grid.Row="3" Name="PoolAddressTextBox" Height="20" VerticalAlignment="Center" TextAlignment="Left" Text="{Binding PoolAddressString, Mode=TwoWay, ValidatesOnExceptions=True}">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
-                            <Setter Property="Visibility" Value="Hidden" />
-                            <Setter Property="Text" Value="" />
+                            <Setter Property="Visibility" Value="Hidden"/>
                             <Style.Triggers>
-                                <!-- Zero this field if it becomes unchecked -->
-                                <DataTrigger Binding="{Binding IsChecked, ElementName=UsingAPoolCheckBox}" Value="False">
-                                    <Setter Property="Visibility" Value="Hidden" />
-                                    <Setter Property="Text" Value="" />
-                                </DataTrigger>
                                 <DataTrigger Binding="{Binding IsChecked, ElementName=UsingAPoolCheckBox}" Value="True">
                                     <Setter Property="Visibility" Value="Visible" />
                                 </DataTrigger>
@@ -96,15 +86,11 @@
                     </TextBox.Style>
                 </TextBox>
 
-                <TextBlock Grid.Column="1" Grid.Row="4" Text="Pool fees" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <TextBlock Grid.Column="1" Grid.Row="4" Text="Pool fee" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                           FontSize="14" Foreground="#FF0C1E3E" TextAlignment="Right" TextWrapping="Wrap">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
                             <Setter Property="Visibility" Value="Hidden" />
-                            <Setter Property="FontSize" Value="14"/>
-                            <Setter Property="Foreground" Value="#FF0C1E3E"/>
-                            <Setter Property="TextAlignment" Value="Left"/>
-                            <Setter Property="HorizontalAlignment" Value="Left"/>
-                            <Setter Property="TextWrapping" Value="Wrap"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsChecked, ElementName=UsingAPoolCheckBox}" Value="True">
                                     <Setter Property="Visibility" Value="Visible" />
@@ -118,11 +104,8 @@
                          Width="50" TextAlignment="Right" Text="{Binding PoolFees, Mode=TwoWay, ValidatesOnExceptions=True}">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
-                            <Setter Property="Visibility" Value="Hidden" />
+                            <Setter Property="Visibility" Value="Hidden"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsChecked, ElementName=UsingAPoolCheckBox}" Value="False">
-                                    <Setter Property="Visibility" Value="Hidden" />
-                                </DataTrigger>
                                 <DataTrigger Binding="{Binding IsChecked, ElementName=UsingAPoolCheckBox}" Value="True">
                                     <Setter Property="Visibility" Value="Visible" />
                                 </DataTrigger>
@@ -141,15 +124,11 @@
                 <TextBlock Grid.Column="1" Grid.Row="6" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Adjust fees?" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <CheckBox Grid.Column="3" Grid.Row="6" Name="AdjustFeesCheckBox" Height="20" VerticalAlignment="Bottom" IsChecked="{Binding FeesChecked}"/>
 
-                <TextBlock Grid.Column="1" Grid.Row="7" Text="Split fee (DCR/KB)" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <TextBlock Grid.Column="1" Grid.Row="7" Text="Split fee (DCR/kB)" HorizontalAlignment="Right" VerticalAlignment="Center"
+                           FontSize="14" Foreground="#FF0C1E3E" TextAlignment="Right" TextWrapping="Wrap">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
                             <Setter Property="Visibility" Value="Hidden" />
-                            <Setter Property="FontSize" Value="14"/>
-                            <Setter Property="Foreground" Value="#FF0C1E3E"/>
-                            <Setter Property="TextAlignment" Value="Left"/>
-                            <Setter Property="HorizontalAlignment" Value="Left"/>
-                            <Setter Property="TextWrapping" Value="Wrap"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsChecked, ElementName=AdjustFeesCheckBox}" Value="True">
                                     <Setter Property="Visibility" Value="Visible" />
@@ -165,10 +144,6 @@
                         <Style TargetType="TextBox">
                             <Setter Property="Visibility" Value="Hidden" />
                             <Style.Triggers>
-                                <!-- Write the default to this field if it becomes unchecked -->
-                                <DataTrigger Binding="{Binding IsChecked, ElementName=AdjustFeesCheckBox}" Value="False">
-                                    <Setter Property="Visibility" Value="Hidden" />
-                                </DataTrigger>
                                 <DataTrigger Binding="{Binding IsChecked, ElementName=AdjustFeesCheckBox}" Value="True">
                                     <Setter Property="Visibility" Value="Visible" />
                                 </DataTrigger>
@@ -180,15 +155,11 @@
                     </TextBox.Style>
                 </TextBox>
 
-                <TextBlock Grid.Column="1" Grid.Row="8" Text="Ticket fee (DCR/KB)" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <TextBlock Grid.Column="1" Grid.Row="8" Text="Ticket fee (DCR/kB)" HorizontalAlignment="Right" VerticalAlignment="Center"
+                           FontSize="14" Foreground="#FF0C1E3E" TextAlignment="Right" TextWrapping="Wrap">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
                             <Setter Property="Visibility" Value="Hidden" />
-                            <Setter Property="FontSize" Value="14"/>
-                            <Setter Property="Foreground" Value="#FF0C1E3E"/>
-                            <Setter Property="TextAlignment" Value="Left"/>
-                            <Setter Property="HorizontalAlignment" Value="Left"/>
-                            <Setter Property="TextWrapping" Value="Wrap"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsChecked, ElementName=AdjustFeesCheckBox}" Value="True">
                                     <Setter Property="Visibility" Value="Visible" />
@@ -204,10 +175,6 @@
                         <Style TargetType="TextBox">
                             <Setter Property="Visibility" Value="Hidden" />
                             <Style.Triggers>
-                                <!-- Write the default to this field if it becomes unchecked -->
-                                <DataTrigger Binding="{Binding IsChecked, ElementName=AdjustFeesCheckBox}" Value="False">
-                                    <Setter Property="Visibility" Value="Hidden" />
-                                </DataTrigger>
                                 <DataTrigger Binding="{Binding IsChecked, ElementName=AdjustFeesCheckBox}" Value="True">
                                     <Setter Property="Visibility" Value="Visible" />
                                 </DataTrigger>
@@ -251,7 +218,7 @@
                         <RowDefinition Height="20"/>
                         <RowDefinition Height="20"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="4" Style="{StaticResource shellDescriptionTextBlockStyle}" Margin="0 0 0 0" Text="{Binding StakeDifficultyProperties.Price}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="0" Grid.Column="4" Style="{StaticResource shellDescriptionTextBlockStyle}" Margin="0 0 0 0" Text="{Binding StakeDifficultyProperties.NextTicketPrice}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     <TextBlock Grid.Row="1" Grid.Column="4" Style="{StaticResource shellDescriptionTextBlockStyle}" Margin="0 0 0 0" Text="{Binding SelectedAccount.Balances.SpendableBalance}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     <TextBlock Grid.Row="2" Grid.Column="4" Style="{StaticResource shellDescriptionTextBlockStyle}" Margin="0 0 0 0" Text="{Binding BlocksToRetarget}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 </Grid>
