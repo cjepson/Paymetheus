@@ -19,7 +19,7 @@ namespace Paymetheus.ViewModels
 
         public ImportScriptDialogViewModel(ShellViewModel shell) : base(shell)
         {
-            _importScript = new DelegateCommandAsync(ImportScriptAction);
+            _importScript = new DelegateCommandAsync(ImportScriptAsync);
             _importScript.Executable = false;
         }
 
@@ -39,13 +39,14 @@ namespace Paymetheus.ViewModels
                 }
             }        
         }
+
         public string Passphrase { private get; set; } = "";
 
-        private async Task ImportScriptAction()
+        private async Task ImportScriptAsync()
         {
             try
             {
-                await App.Current.Synchronizer.WalletRpcClient.ImportScriptAsync(_scriptBytes, true, 0, Passphrase);
+                await App.Current.Synchronizer.WalletRpcClient.ImportScriptAsync(_scriptBytes, false, 0, Passphrase);
                 HideDialog();
             }
             catch (RpcException ex) when (ex.Status.StatusCode == StatusCode.AlreadyExists)
