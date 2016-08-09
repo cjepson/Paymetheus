@@ -133,13 +133,6 @@ namespace Paymetheus.ViewModels
             {
                 try
                 {
-                    if ((Amount)(_stakeDifficultyProperties.NextTicketPrice * (Amount)value) > _selectedAccount.Balances.SpendableBalance)
-                    {
-                        string errorString = "Not enough funds; have " +
-                            _selectedAccount.Balances.SpendableBalance.ToString() + " want " +
-                            ((Amount)(_stakeDifficultyProperties.NextTicketPrice * (Amount)value)).ToString();
-                        throw new ArgumentException(errorString);
-                    }
                     _ticketsToPurchase = value;
                 }
                 catch
@@ -300,6 +293,20 @@ namespace Paymetheus.ViewModels
                     _purchaseTickets.Executable = false;
                     return;
                 }
+            }
+
+            // Not enough funds.
+            if ((_stakeDifficultyProperties.NextTicketPrice * (Amount)_ticketsToPurchase) > _selectedAccount.Balances.SpendableBalance)
+            {
+                // TODO: Better inform the user somehow of why it doesn't allow ticket 
+                // purchase?
+                //
+                // string errorString = "Not enough funds; have " +
+                //     _selectedAccount.Balances.SpendableBalance.ToString() + " want " +
+                //     ((Amount)(_stakeDifficultyProperties.NextTicketPrice * (Amount)_ticketsToPurchase)).ToString();
+                // MessageBox.Show(errorString);
+                _purchaseTickets.Executable = false;
+                return;
             }
 
             _purchaseTickets.Executable = true;
