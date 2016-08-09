@@ -14,13 +14,22 @@
 
     <ScrollViewer Style="{StaticResource MainPaneScrollViewerStyle}">
         <StackPanel Margin="40 20 40 0">
-            <TextBlock Margin="0 0 0 10" Text="Purchase tickets" Style="{StaticResource shellMediumHeaderTextBlockStyle}"/>
-            <TextBlock Margin="0 0 0 40" Width="560" Style="{StaticResource shellDescriptionTextBlockStyle}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="140"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Margin="0 0 0 10" Grid.Column="0" Text="Purchase tickets" Style="{StaticResource shellMediumHeaderTextBlockStyle}"/>
+                <TextBlock Margin="0 37 0 40" Grid.Column="0" Style="{StaticResource shellDescriptionTextBlockStyle}">
                 In order to stake mine, you must make a deposit to the network in the form of a ticket. 
                 The ticket enters the owner in a lottery for the next several months, at which time it 
                 may be chosen at any block for validation. The safest way to ensure that your vote 
                 succeeds is to use a stake pool.
-            </TextBlock>
+                </TextBlock>
+                <Button Grid.Column="1"  HorizontalAlignment="Right" VerticalAlignment="Top" 
+                    Content="REFRESH" Command="{Binding FetchStakeDifficultyCommand}"
+                    Style="{StaticResource ButtonBlue}"/>
+            </Grid>
 
             <Grid>
                 <Grid.ColumnDefinitions>
