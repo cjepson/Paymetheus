@@ -139,7 +139,8 @@
                 </TextBlock>
 
                 <TextBox Grid.Column="3" Grid.Row="7" Name="SplitFeeTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" 
-                         Text="{Binding SplitFee, Mode=TwoWay, ValidatesOnExceptions=True}" Width="80" TextAlignment="Right">
+                         Text="{Binding SplitFeeString, Mode=TwoWay, ValidatesOnExceptions=True}" Width="80" TextAlignment="Right"
+                         PreviewTextInput="OutputAmountTextBox_PreviewTextInput">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Visibility" Value="Hidden" />
@@ -170,7 +171,8 @@
                 </TextBlock>
                 
                 <TextBox Grid.Column="3" Grid.Row="8" Name="TicketFeeTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" 
-                         Text="{Binding TicketFee, Mode=TwoWay, ValidatesOnExceptions=True}" Width="80" TextAlignment="Right">
+                         Text="{Binding TicketFeeString, Mode=TwoWay, ValidatesOnExceptions=True}" Width="80" TextAlignment="Right" 
+                         PreviewTextInput="OutputAmountTextBox_PreviewTextInput">
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Visibility" Value="Hidden" />
@@ -188,7 +190,7 @@
 
                 <TextBlock Grid.Column="1" Grid.Row="9" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Number" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <TextBox Grid.Column="3" Grid.Row="9" Name="NumberTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" TextAlignment="Right" 
-                         Text="{Binding Number, Mode=TwoWay, ValidatesOnExceptions=True}" Style="{StaticResource tooltipAlertTextBox}"/>
+                         Text="{Binding TicketsToPurchase, Mode=TwoWay, ValidatesOnExceptions=True}" Style="{StaticResource tooltipAlertTextBox}"/>
             </Grid>
 
             <Grid Margin="0 20 0 0">

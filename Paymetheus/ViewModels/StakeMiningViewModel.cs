@@ -16,7 +16,7 @@ namespace Paymetheus.ViewModels
     {
         public StakeMiningViewModel() : base()
         {
-            FetchStakeInfoCommand = new DelegateCommand(FetchStakeInfoAction);
+            FetchStakeInfoCommand = new DelegateCommand(FetchStakeInfoAsync);
             FetchStakeInfoCommand.Execute(null);
         }
 
@@ -36,13 +36,16 @@ namespace Paymetheus.ViewModels
 
         public ICommand FetchStakeInfoCommand { get; }
 
-        private async void FetchStakeInfoAction()
+        private async void FetchStakeInfoAsync()
         {
             try
             {
                 StakeInfoProperties = await App.Current.Synchronizer.WalletRpcClient.StakeInfoAsync();
                 StakeDifficultyProperties = await App.Current.Synchronizer.WalletRpcClient.StakeDifficultyAsync();
             }
+            // Do not give an error if a failed precondition response is given. This generally means that 
+            // the wallet is synchronizing to the latest block, and if the user waits a short period of 
+            // time and retries there will be able to see the appropriate result.
             catch (RpcException ex) when (ex.Status.StatusCode == StatusCode.FailedPrecondition)
             {
             }

@@ -23,7 +23,7 @@ namespace Paymetheus.ViewModels
                 SelectedAccount = synchronizer.Accounts[0];
             }
 
-            FetchStakeDifficultyCommand = new DelegateCommand(FetchStakeDifficultyAction);
+            FetchStakeDifficultyCommand = new DelegateCommand(FetchStakeDifficultyAsync);
             FetchStakeDifficultyCommand.Execute(null);
 
             _purchaseTickets = new DelegateCommand(PurchaseTicketsAction);
@@ -55,15 +55,17 @@ namespace Paymetheus.ViewModels
         }
 
         private Address _ticketAddress = null;
-        private string _ticketAddressString;
+        private string _ticketAddressString = "";
         public string TicketAddressString
         {
             get { return _ticketAddress.ToString(); }
-            set {
+            set
+            {
                 _ticketAddressString = value;
 
                 _ticketAddress = null;
-                if (_ticketAddressString == "") {
+                if (_ticketAddressString == "")
+                {
                     return;
                 }
 
@@ -73,25 +75,25 @@ namespace Paymetheus.ViewModels
                 }
                 finally
                 {
-                    _settingsAreValid();
+                    enableOrDisableSendCommand();
                 }
             }
         }
 
         private Address _poolAddress = null;
-        private string _poolAddressString;
+        private string _poolAddressString = "";
         public string PoolAddressString
         {
             get { return _poolAddress.ToString(); }
             set
             {
                 _poolAddressString = value;
-
-                _poolAddress = null;
                 if (_poolAddressString == "")
                 {
                     return;
                 }
+
+                _poolAddress = null;
 
                 try
                 {
@@ -99,152 +101,163 @@ namespace Paymetheus.ViewModels
                 }
                 finally
                 {
-                    _settingsAreValid();
+                    enableOrDisableSendCommand();
                 }
             }
         }
 
-        private double _poolFees = 0.0;
-        public double PoolFees
+        private decimal _poolFees = 0.0M;
+        public decimal PoolFees
         {
             get { return _poolFees; }
             set
             {
-                var _testPoolFees = value * 100.0;
-                if (_testPoolFees != Math.Floor(_testPoolFees))
+                try
                 {
-                    _poolFees = 0.0;
-                    throw new ArgumentException("Bad pool fees; pool fees must be between 0.00 and 100.00%");
+                    var testPoolFees = value * 100.0M;
+                    if (testPoolFees != Math.Floor(testPoolFees))
+                        throw new ArgumentException("pool fees must be between 0.00 and 100.00%");
+                    if (testPoolFees > 10000.0M)
+                        throw new ArgumentException("pool fees must be less than 100.00%");
+                    if (testPoolFees < 1.0M)
+                        throw new ArgumentException("pool fees must be greater than 0.00%");
+                    _poolFees = value;
                 }
-
-                if (_testPoolFees > 10000.0)
+                catch
                 {
-                    _poolFees = 0.0;
-                    throw new ArgumentException("Bad pool fees; pool fees must be less than 100.00%");
+                    _poolFees = 0.0M;
+                    throw;
                 }
-
-                if (_testPoolFees < 1.0)
+                finally
                 {
-                    _poolFees = 0.0;
-                    throw new ArgumentException("Bad pool fees; pool fees must be greater than 0.00%");
+                    enableOrDisableSendCommand();
                 }
-
-                _poolFees = value;
-                _settingsAreValid();
             }
         }
 
-        private long _number = 0;
-        public long Number
+        private uint _ticketsToPurchase = 0;
+        public uint TicketsToPurchase
         {
-            get { return _number; }
+            get { return _ticketsToPurchase; }
             set
             {
-                if (value < 0)
+                try
                 {
-                    _number = 0;
-                    throw new ArgumentException("Negative number of tickets passed");
+                    if ((Amount)(_stakeDifficultyProperties.NextTicketPrice * (Amount)value) > _selectedAccount.Balances.SpendableBalance)
+                    {
+                        string errorString = "Not enough funds; have " +
+                            _selectedAccount.Balances.SpendableBalance.ToString() + " want " +
+                            ((Amount)(_stakeDifficultyProperties.NextTicketPrice * (Amount)value)).ToString();
+                        throw new ArgumentException(errorString);
+                    }
+                    _ticketsToPurchase = value;
                 }
-
-                if (_selectedAccount == null)
+                catch
                 {
-                    _number = 0;
-                    throw new ArgumentException("No account selected");
+                    _ticketsToPurchase = 0;
+                    throw;
                 }
-
-                if (_selectedAccount.Balances.SpendableBalance <= 0) {
-                    _number = 0;
-                    throw new ArgumentException("Empty account");
-                }
-
-                if ((Amount)(_stakeDifficultyProperties.NextTicketPrice * value) > _selectedAccount.Balances.SpendableBalance)
+                finally
                 {
-                    _number = 0;
-                    string errorString = "Not enough funds; have " +
-                        _selectedAccount.Balances.SpendableBalance.ToString() + " want " +
-                        ((Amount)(_stakeDifficultyProperties.NextTicketPrice * value)).ToString();
-                    throw new ArgumentException(errorString);
+                    enableOrDisableSendCommand();
                 }
-
-                _number = value;
-                _settingsAreValid();
             }
         }
 
         // The default expiry is 16.
-        private int _expiry = 16;
-        private int _minExpiry = 2;
-        public int Expiry
+        private uint _expiry = 16;
+        private uint minExpiry = 2;
+        public uint Expiry
         {
             get { return _expiry; }
             set
             {
-                if (value <= _minExpiry)
+                try
+                {
+                    if (value < minExpiry)
+                        throw new ArgumentException("Expiry must be a minimum of 2 blocks");
+
+                    _expiry = value;
+                }
+                catch
                 {
                     _expiry = 0;
-                    throw new ArgumentException("Expiry must be a minimum of 2 blocks");
+                    throw;
                 }
-
-                _expiry = value;
-                _settingsAreValid();
+                finally
+                {
+                    enableOrDisableSendCommand();
+                }
             }
         }
 
         // TODO Declare this as a global somewhere?
-        private Amount _minFeeAmount = Denomination.Decred.AmountFromDouble(0.01000000);
-        private Amount _maxFeeAmount = Denomination.Decred.AmountFromDouble(0.99999999);
+        private const long minFeePerKb = (long)1e6;
+        private const long maxFeePerKb = (long)1e8 - 1;
 
         private Amount _splitFee = 0;
-        public double SplitFee
+        public Amount SplitFeeAmount => _splitFee;
+        public string SplitFeeString
         {
-            get { return Denomination.Decred.DoubleFromAmount(_splitFee); }
+            get { return _splitFee.ToString(); }
             set
             {
-                var _testAmount = Denomination.Decred.AmountFromDouble(value);
+                try
+                {
+                    var testAmount = Denomination.Decred.AmountFromString(value);
 
-                if (_testAmount < _minFeeAmount)
+                    if (testAmount < minFeePerKb)
+                        throw new ArgumentException($"Too small fee passed (must be >= {(Amount)minFeePerKb} DCR/kB)");
+
+                    if (testAmount > maxFeePerKb)
+                        throw new ArgumentException($"Too big fee passed (must be <= {(Amount)minFeePerKb} DCR/kB)");
+
+                    _splitFee = testAmount;
+                }
+                catch
                 {
                     _splitFee = 0;
-                    throw new ArgumentException("Too small fee passed (must be >= 0.01000000 DCR/KB)");
+                    throw;
                 }
-
-                if (_testAmount > _maxFeeAmount)
+                finally
                 {
-                    _splitFee = 0;
-                    throw new ArgumentException("Too big fee passed (must be <= 0.99999999 DCR/KB)");
+                    enableOrDisableSendCommand();
                 }
-
-                _splitFee = _testAmount;
-                _settingsAreValid();
             }
         }
 
         private Amount _ticketFee = 0;
-        public double TicketFee
+        public Amount TicketFeeAmount => _ticketFee;
+        public string TicketFeeString
         {
-            get { return Denomination.Decred.DoubleFromAmount(_ticketFee); ; }
+            get { return _ticketFee.ToString(); }
             set
             {
-                var _testAmount = Denomination.Decred.AmountFromDouble(value);
+                try
+                {
+                    var testAmount = Denomination.Decred.AmountFromString(value);
 
-                if (_testAmount < _minFeeAmount)
+                    if (testAmount < minFeePerKb)
+                        throw new ArgumentException($"Too small fee passed (must be >= {(Amount)minFeePerKb} DCR/kB)");
+
+                    if (testAmount > maxFeePerKb)
+                        throw new ArgumentException($"Too big fee passed (must be <= {(Amount)minFeePerKb} DCR/kB)");
+
+                    _ticketFee = testAmount;
+                }
+                catch
                 {
                     _ticketFee = 0;
-                    throw new ArgumentException("Too small fee passed (must be >= 0.01000000 DCR/KB)");
+                    throw;
                 }
-
-                if (_testAmount > _maxFeeAmount)
+                finally
                 {
-                    _ticketFee = 0;
-                    throw new ArgumentException("Too big fee passed (must be <= 0.99999999 DCR/KB)");
+                    enableOrDisableSendCommand();
                 }
-
-                _ticketFee = _testAmount;
-                _settingsAreValid();
             }
         }
 
-        private void _settingsAreValid()
+        private void enableOrDisableSendCommand()
         {
             if (_selectedAccount == null)
             {
@@ -258,12 +271,12 @@ namespace Paymetheus.ViewModels
                 return;
             }
 
-            if (_expiry < _minExpiry) {
+            if (_expiry < minExpiry) {
                 _purchaseTickets.Executable = false;
                 return;
             }
 
-            if (_number <= 0)
+            if (_ticketsToPurchase <= 0)
             {
                 _purchaseTickets.Executable = false;
                 return;
@@ -277,7 +290,7 @@ namespace Paymetheus.ViewModels
                     return;
                 }
 
-                if (_poolFees == 0.0)
+                if (_poolFees == 0.0M)
                 {
                     _purchaseTickets.Executable = false;
                     return;
@@ -311,14 +324,14 @@ namespace Paymetheus.ViewModels
 
         public ICommand FetchStakeDifficultyCommand { get; }
 
-        private async void FetchStakeDifficultyAction()
+        private async void FetchStakeDifficultyAsync()
         {
             try
             {
                 StakeDifficultyProperties = await App.Current.Synchronizer.WalletRpcClient.StakeDifficultyAsync();
-                int _windowSize = 144;
-                int _heightOfChange = ((StakeDifficultyProperties.HeightForTicketPrice / _windowSize) + 1) * _windowSize;
-                BlocksToRetarget = _heightOfChange - StakeDifficultyProperties.HeightForTicketPrice;
+                int windowSize = 144;
+                int heightOfChange = ((StakeDifficultyProperties.HeightForTicketPrice / windowSize) + 1) * windowSize;
+                BlocksToRetarget = heightOfChange - StakeDifficultyProperties.HeightForTicketPrice;
             }
             catch (Exception ex)
             {
@@ -338,23 +351,8 @@ namespace Paymetheus.ViewModels
             var shell = ViewModelLocator.ShellViewModel as ShellViewModel;
             if (shell != null)
             {
-                var _account = SelectedAccount.Account;
-                var _spendLimit = StakeDifficultyProperties.NextTicketPrice;
-                int _requiredConfirms = 2; // TODO allow user to set
-                uint _expiryHeight = (uint)_expiry + (uint)StakeDifficultyProperties.HeightForTicketPrice;
-
-                Amount _splitFeeLocal = 0;
-                Amount _ticketFeeLocal = 0;
-                if (_feesChecked)
-                {
-                    _splitFeeLocal = _splitFee;
-                    _ticketFeeLocal = _ticketFee;
-                }
-
                 Func<string, Task<bool>> action =
-                    passphrase => PurchaseTicketsWithPassphrase(passphrase, _account, _spendLimit, 
-                    _requiredConfirms, _ticketAddress, (uint)_number, _poolAddress, _poolFees,
-                    _expiryHeight, _splitFeeLocal, _ticketFeeLocal);
+                    passphrase => PurchaseTicketsWithPassphrase(passphrase);
                 shell.VisibleDialogContent = new PassphraseDialogViewModel(shell, 
                     "Enter passphrase to purchase tickets", 
                     "PURCHASE", 
@@ -369,35 +367,36 @@ namespace Paymetheus.ViewModels
             set { _responseString = value; RaisePropertyChanged(); }
         }
 
-        private async Task<bool> PurchaseTicketsWithPassphrase(string passphrase, Account account, 
-            Amount spendLimit, int reqConfs, Address ticketAddress, uint number, Address poolAddress,
-            double poolFees, uint expiry, Amount txFee, Amount ticketFee)
+        private async Task<bool> PurchaseTicketsWithPassphrase(string passphrase)
         {
+            var account = SelectedAccount.Account;
+            var spendLimit = StakeDifficultyProperties.NextTicketPrice;
+            int requiredConfirms = 2; // TODO allow user to set
+            uint expiryHeight = _expiry + (uint)StakeDifficultyProperties.HeightForTicketPrice;
+
+            Amount splitFeeLocal = 0;
+            Amount ticketFeeLocal = 0;
+            if (_feesChecked)
+            {
+                splitFeeLocal = _splitFee;
+               ticketFeeLocal = _ticketFee;
+            }
+
             List<Blake256Hash> purchaseResponse;
             var walletClient = App.Current.Synchronizer.WalletRpcClient;
             try
             {
-                purchaseResponse = await walletClient.PurchaseTicketsAsync(account, spendLimit, 
-                    reqConfs, ticketAddress, number, poolAddress, poolFees, expiry, txFee,
-                    ticketFee, passphrase);
-            }
-            catch (RpcException ex) when (ex.Status.StatusCode == StatusCode.InvalidArgument)
-            {
-                ResponseString = "Invalid argument error: " + ex.ToString();
-                return true;
-            }
-            catch (RpcException ex) when (ex.Status.StatusCode == StatusCode.FailedPrecondition)
-            {
-                ResponseString = "Failed precondition error: " + ex.ToString();
-                return true;
+                purchaseResponse = await walletClient.PurchaseTicketsAsync(account, spendLimit,
+                    requiredConfirms, _ticketAddress, _ticketsToPurchase, _poolAddress, 
+                    (double)_poolFees, _expiry, _splitFee, _ticketFee, passphrase);
             }
             catch (Exception ex)
             {
                 ResponseString = "Unexpected error: " + ex.ToString();
-                return true;
+                return false;
             }
 
-            ResponseString = "Success! \n" + string.Join("\n", purchaseResponse);
+            ResponseString = "Success! Ticket hashes:\n" + string.Join("\n", purchaseResponse);
             return true;
         }
     }
