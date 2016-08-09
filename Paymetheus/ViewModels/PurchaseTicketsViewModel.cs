@@ -378,7 +378,7 @@ namespace Paymetheus.ViewModels
             {
                 purchaseResponse = await walletClient.PurchaseTicketsAsync(account, spendLimit,
                     requiredConfirms, _ticketAddress, _ticketsToPurchase, _poolAddress, 
-                    (double)_poolFees, _expiry, _splitFee, _ticketFee, passphrase);
+                    (double)_poolFees, expiryHeight, _splitFee, _ticketFee, passphrase);
             }
             catch (Exception ex)
             {
