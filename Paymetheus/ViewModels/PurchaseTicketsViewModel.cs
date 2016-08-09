@@ -55,23 +55,18 @@ namespace Paymetheus.ViewModels
         }
 
         private Address _ticketAddress = null;
-        private string _ticketAddressString = "";
         public string TicketAddressString
         {
-            get { return _ticketAddress.ToString(); }
+            get { return _ticketAddress?.ToString() ?? ""; }
             set
             {
-                _ticketAddressString = value;
-
                 _ticketAddress = null;
-                if (_ticketAddressString == "")
-                {
+                if (value == "")
                     return;
-                }
 
                 try
                 {
-                    _ticketAddress = Address.Decode(_ticketAddressString);
+                    _ticketAddress = Address.Decode(value);
                 }
                 finally
                 {
@@ -81,23 +76,18 @@ namespace Paymetheus.ViewModels
         }
 
         private Address _poolAddress = null;
-        private string _poolAddressString = "";
         public string PoolAddressString
         {
-            get { return _poolAddress.ToString(); }
+            get { return _poolAddress?.ToString() ?? ""; }
             set
             {
-                _poolAddressString = value;
-                if (_poolAddressString == "")
-                {
-                    return;
-                }
-
                 _poolAddress = null;
+                if (value == "")
+                    return;
 
                 try
                 {
-                    _poolAddress = Address.Decode(_poolAddressString);
+                    _poolAddress = Address.Decode(value);
                 }
                 finally
                 {
@@ -117,9 +107,9 @@ namespace Paymetheus.ViewModels
                     var testPoolFees = value * 100.0M;
                     if (testPoolFees != Math.Floor(testPoolFees))
                         throw new ArgumentException("pool fees must be between 0.00 and 100.00%");
-                    if (testPoolFees > 10000.0M)
+                    if (value > 100.0M)
                         throw new ArgumentException("pool fees must be less than 100.00%");
-                    if (testPoolFees < 1.0M)
+                    if (value < 0.01M)
                         throw new ArgumentException("pool fees must be greater than 0.00%");
                     _poolFees = value;
                 }

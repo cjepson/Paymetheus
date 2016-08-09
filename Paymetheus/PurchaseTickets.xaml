@@ -128,7 +128,17 @@
 
                 <TextBlock Grid.Column="1" Grid.Row="5" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Expiry (blocks)" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <TextBox Grid.Column="3" Grid.Row="5" Name="ExpiryTextBox" Height="20" VerticalAlignment="Center" Text="{Binding Expiry, Mode=TwoWay, ValidatesOnExceptions=True}"
-                         HorizontalAlignment="Left" Width="50" TextAlignment="Right"/>
+                         HorizontalAlignment="Left" Width="50" TextAlignment="Right">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Style.Triggers>
+                                <Trigger Property="Validation.HasError" Value="True">
+                                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
 
                 <TextBlock Grid.Column="1" Grid.Row="6" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Adjust fees?" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <CheckBox Grid.Column="3" Grid.Row="6" Name="AdjustFeesCheckBox" Height="20" VerticalAlignment="Bottom" IsChecked="{Binding FeesChecked}"/>
@@ -197,8 +207,8 @@
                     </TextBox.Style>
                 </TextBox>
 
-                <TextBlock Grid.Column="1" Grid.Row="9" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Number" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <TextBox Grid.Column="3" Grid.Row="9" Name="NumberTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" TextAlignment="Right" 
+                <TextBlock Grid.Column="1" Grid.Row="9" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="Tickets to purchase" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <TextBox Grid.Column="3" Grid.Row="9" Name="TicketsToPurchaseTextBox" Height="20" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" TextAlignment="Right" 
                          Text="{Binding TicketsToPurchase, Mode=TwoWay, ValidatesOnExceptions=True}" Style="{StaticResource tooltipAlertTextBox}"/>
             </Grid>
 
