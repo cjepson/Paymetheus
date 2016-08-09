@@ -239,12 +239,12 @@
                         <RowDefinition Height="20"/>
                         <RowDefinition Height="20"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="4" Style="{StaticResource shellDescriptionTextBlockStyle}" Margin="0 0 0 0" Text="{Binding StakeDifficultyProperties.NextTicketPrice}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="1" Grid.Column="4" Style="{StaticResource shellDescriptionTextBlockStyle}" Margin="0 0 0 0" Text="{Binding SelectedAccount.Balances.SpendableBalance}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="2" Grid.Column="4" Style="{StaticResource shellDescriptionTextBlockStyle}" Margin="0 0 0 0" Text="{Binding BlocksToRetarget}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="0" Grid.Column="4" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="{Binding StakeDifficultyProperties.NextTicketPrice}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="1" Grid.Column="4" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="{Binding SelectedAccount.Balances.SpendableBalance}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="2" Grid.Column="4" Style="{StaticResource shellDescriptionTextBlockStyle}" Text="{Binding BlocksToRetarget}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 </Grid>
             </Grid>
-            <TextBox Name="PurchaseTicketsSuccessTextBox" Text="{Binding ResponseString, Mode=TwoWay}" Foreground="#FF0C1E3E" FontSize="16" Margin="0 40 0 0" Background="Transparent" BorderThickness="0" IsReadOnly="True"/>
+            <TextBox Name="PurchaseTicketsSuccessTextBox" Text="{Binding ResponseString, Mode=TwoWay}" Foreground="#FF0C1E3E" FontSize="16" Margin="0 40 0 0" Background="Transparent" BorderThickness="0" IsReadOnly="True" TextWrapping="Wrap"/>
         </StackPanel>
     </ScrollViewer>
 </Page>
