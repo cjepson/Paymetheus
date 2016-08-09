@@ -108,9 +108,9 @@ namespace Paymetheus.ViewModels
                     if (testPoolFees != Math.Floor(testPoolFees))
                         throw new ArgumentException("pool fees must have two decimal points of precision maximum");
                     if (value > 100.0M)
-                        throw new ArgumentException("pool fees must be less than 100.00%");
+                        throw new ArgumentException("pool fees must be less or equal too than 100.00%");
                     if (value < 0.01M)
-                        throw new ArgumentException("pool fees must be greater than 0.00%");
+                        throw new ArgumentException("pool fees must be greater than or equal to 0.01%");
                     _poolFees = value;
                 }
                 catch
